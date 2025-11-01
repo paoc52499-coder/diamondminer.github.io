@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DiamondMiner Dashboard – $DIA</title>
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    /* Animated glow for the diamond logo */
+    @keyframes glow {
+      0% { filter: drop-shadow(0 0 6px rgba(59,130,246,0.6)); transform: translateY(0); }
+      50% { filter: drop-shadow(0 0 18px rgba(99,102,241,0.85)); transform: translateY(-4px); }
+      100% { filter: drop-shadow(0 0 6px rgba(59,130,246,0.6)); transform: translateY(0); }
+    }
+
+    .glow {
+      animation: glow 2.8s infinite ease-in-out;
+    }
+
+    /* subtle card backdrop */
+    .glass {
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 min-h-screen text-slate-100 antialiased">
+
+  <!-- Header -->
+  <div class="max-w-6xl mx-auto px-6 py-10">
+    <header class="flex items-center justify-between mb-8">
+      <div class="flex items-center gap-4">
+        <div class="w-12 h-12 p-2 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-500 shadow-lg glow">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+            <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="white" fill-opacity="0.95"/>
+          </svg>
+        </div>
+        <div>
+          <h1 class="text-2xl font-semibold">DiamondMiner Dashboard</h1>
+          <p class="text-sm text-slate-400">
+            Token: <span class="font-medium text-indigo-300">$DIA</span> —
+            <a href="https://x.com/Diamondminer" class="text-indigo-200 underline" target="_blank">Follow us</a>
+          </p>
+        </div>
+      </div>
+      <nav class="flex gap-6 text-sm">
+        <a href="index.html" class="hover:text-indigo-300">Home</a>
+        <a href="dashboard.html" class="hover:text-indigo-300">Dashboard</a>
+        <a href="marketplace.html" class="hover:text-indigo-300">Marketplace</a>
+        <a href="tokenomics.html" class="hover:text-indigo-300">Tokenomics</a>
+        <a href="whitepaper.html" class="hover:text-indigo-300">Whitepaper</a>
+      </nav>
+    </header>
+
+    <!-- Main Dashboard Content -->
+    <main class="grid md:grid-cols-3 gap-8">
+      <!-- Left: Account Summary -->
+      <section class="md:col-span-2 space-y-6">
+        <div class="glass p-6 rounded-2xl">
+          <h2 class="text-lg font-semibold mb-3">Account Summary</h2>
+          <div class="grid grid-cols-3 gap-6 text-center">
+            <div>
+              <p class="text-sm text-slate-400">Balance</p>
+              <p class="text-2xl font-bold">$1,234.56</p>
+              <p class="text-xs text-slate-400">($DIA)</p>
+            </div>
+            <div>
+              <p class="text-sm text-slate-400">Active Miners</p>
+              <p class="text-2xl font-bold">12</p>
+            </div>
+            <div>
+              <p class="text-sm text-slate-400">Network</p>
+              <p class="text-2xl font-bold">Solana</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="glass p-6 rounded-2xl">
+          <h2 class="text-lg font-semibold mb-4">Recent Activity</h2>
+          <ul class="space-y-3">
+            <li class="flex items-center justify-between p-3 rounded-lg bg-slate-800/40">
+              <div>
+                <p class="text-sm">Received $DIA</p>
+                <p class="text-xs text-slate-400">From: 0x3a...f92b</p>
+              </div>
+              <div class="text-right">
+                <p class="font-medium text-green-400">+120</p>
+                <p class="text-xs text-slate-400">Oct 30, 2025</p>
+              </div>
+            </li>
+            <li class="flex items-center justify-between p-3 rounded-lg bg-slate-800/40">
+              <div>
+                <p class="text-sm">Miner Purchased</p>
+                <p class="text-xs text-slate-400">Model: Blue Diamond</p>
+              </div>
+              <div class="text-right">
+                <p class="font-medium text-red-400">-3,000</p>
+                <p class="text-xs text-slate-400">Oct 25, 2025</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Right: Widgets -->
+      <aside class="space-y-6">
+        <div class="glass p-6 rounded-2xl shadow-lg">
+          <h3 class="text-sm text-slate-400 mb-2">Token Price</h3>
+          <div class="flex items-baseline gap-3">
+            <p class="text-3xl font-bold">$0.032</p>
+            <p class="text-sm text-green-400">+4.2%</p>
+          </div>
+          <div class="mt-4 h-28 rounded-md bg-slate-800/30 flex items-center justify-center text-sm text-slate-400">
+            Price chart (placeholder)
+          </div>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <!-- Footer -->
+  <footer class="text-center py-6 text-xs text-slate-500">
+    © 2025 DiamondMiner — All Rights Reserved.
+  </footer>
+</body>
+</html>
