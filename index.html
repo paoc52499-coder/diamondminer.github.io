@@ -2,10 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>DiamonMiner Dashboard — $DIA</title>
-  <!-- Tailwind Play CDN for quick prototype -->
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DiamondMiner Dashboard – $DIA</title>
+
+  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
+
   <style>
     /* Animated glow for the diamond logo */
     @keyframes glow {
@@ -13,9 +15,11 @@
       50% { filter: drop-shadow(0 0 18px rgba(99,102,241,0.85)); transform: translateY(-4px); }
       100% { filter: drop-shadow(0 0 6px rgba(59,130,246,0.6)); transform: translateY(0); }
     }
+
     .glow {
       animation: glow 2.8s infinite ease-in-out;
     }
+
     /* subtle card backdrop */
     .glass {
       background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
@@ -25,77 +29,59 @@
   </style>
 </head>
 <body class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 min-h-screen text-slate-100 antialiased">
-  <!-- 🌐 Navigation Bar -->
-<nav class="bg-slate-900/70 backdrop-blur-md fixed w-full z-50 shadow-lg border-b border-cyan-400/20">
-  <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-    <a href="index.html" class="flex items-center space-x-2">
-      <img src="https://cdn-icons-png.flaticon.com/512/616/616490.png" alt="Diamond Logo" class="w-6 h-6 animate-pulse">
-      <span class="text-cyan-400 font-bold text-xl tracking-wide">DiamondMiner</span>
-    </a>
 
-    <ul class="flex space-x-6 text-slate-300 font-medium">
-      <li><a href="index.html" class="hover:text-cyan-400 transition">Home</a></li>
-      <li><a href="dashboard.html" class="hover:text-cyan-400 transition">Dashboard</a></li>
-      <li><a href="marketplace.html" class="hover:text-cyan-400 transition">Marketplace</a></li>
-      <li><a href="tokenomics.html" class="hover:text-cyan-400 transition">Tokenomics</a></li>
-      <li><a href="whitepaper.html" class="hover:text-cyan-400 transition">Whitepaper</a></li>
-    </ul>
-  </div>
-</nav>
-
-<!-- Add spacing so content doesn’t hide behind the nav -->
-<div class="pt-20"></div>
-
+  <!-- Header -->
   <div class="max-w-6xl mx-auto px-6 py-10">
     <header class="flex items-center justify-between mb-8">
       <div class="flex items-center gap-4">
-        <div class="w-12 h-12 p-2 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 shadow-lg glow">
-          <!-- Inline SVG diamond -->
+        <div class="w-12 h-12 p-2 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-500 shadow-lg glow">
           <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
-            <path d="M12 2L15.6 8.6L22 9.5L16.5 14L18 21L12 17.5L6 21L7.5 14L2 9.5L8.4 8.6L12 2Z" fill="white" fill-opacity="0.95"/>
+            <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="white" fill-opacity="0.95"/>
           </svg>
         </div>
         <div>
-          <h1 class="text-2xl font-semibold">DiamonMiner Dashboard</h1>
-          <p class="text-sm text-slate-400">Token: <span class="font-medium text-indigo-300">$DIA</span> • <a href="https://x.com/Diamonminer" class="text-indigo-200 underline" target="_blank" rel="noopener">x.com/Diamonminer</a></p>
+          <h1 class="text-2xl font-semibold">DiamondMiner Dashboard</h1>
+          <p class="text-sm text-slate-400">
+            Token: <span class="font-medium text-indigo-300">$DIA</span> —
+            <a href="https://x.com/Diamondminer" class="text-indigo-200 underline" target="_blank">Follow us</a>
+          </p>
         </div>
       </div>
-      <nav class="flex items-center gap-4">
-        <a class="px-3 py-2 rounded-md text-sm glass" href="#">Overview</a>
-        <a class="px-3 py-2 rounded-md text-sm glass" href="#">Wallet</a>
-        <a class="px-3 py-2 rounded-md text-sm glass" href="#">Market</a>
-        <button class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-md text-sm">Connect Wallet</button>
+      <nav class="flex gap-6 text-sm">
+        <a href="index.html" class="hover:text-indigo-300">Home</a>
+        <a href="dashboard.html" class="hover:text-indigo-300">Dashboard</a>
+        <a href="marketplace.html" class="hover:text-indigo-300">Marketplace</a>
+        <a href="tokenomics.html" class="hover:text-indigo-300">Tokenomics</a>
+        <a href="whitepaper.html" class="hover:text-indigo-300">Whitepaper</a>
       </nav>
     </header>
 
-    <!-- Main grid -->
-    <main class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <!-- Left column: stats -->
+    <!-- Main Dashboard Content -->
+    <main class="grid md:grid-cols-3 gap-8">
+      <!-- Left: Account Summary -->
       <section class="md:col-span-2 space-y-6">
-        <div class="p-6 rounded-2xl glass shadow-lg">
-          <h2 class="text-lg font-semibold mb-4">Account Summary</h2>
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div class="p-4 rounded-lg bg-slate-800/50">
+        <div class="glass p-6 rounded-2xl">
+          <h2 class="text-lg font-semibold mb-3">Account Summary</h2>
+          <div class="grid grid-cols-3 gap-6 text-center">
+            <div>
               <p class="text-sm text-slate-400">Balance</p>
-              <p class="text-2xl font-semibold mt-1">$1,234.56 <span class="text-indigo-300 text-sm ml-2">($DIA)</span></p>
+              <p class="text-2xl font-bold">$1,234.56</p>
+              <p class="text-xs text-slate-400">($DIA)</p>
             </div>
-            <div class="p-4 rounded-lg bg-slate-800/50">
+            <div>
               <p class="text-sm text-slate-400">Active Miners</p>
-              <p class="text-2xl font-semibold mt-1">12</p>
+              <p class="text-2xl font-bold">12</p>
             </div>
-            <div class="p-4 rounded-lg bg-slate-800/50">
+            <div>
               <p class="text-sm text-slate-400">Network</p>
-              <p class="text-2xl font-semibold mt-1">Solana</p>
+              <p class="text-2xl font-bold">Solana</p>
             </div>
           </div>
         </div>
-        
 
-        <div class="p-6 rounded-2xl glass shadow-lg">
-          <div class="flex items-center justify-between mb-4">
-            <h2 class="text-lg font-semibold">Recent Activity</h2>
-            <a href="#" class="text-sm text-slate-400">See all</a>
-          </div>
+        <!-- Recent Activity -->
+        <div class="glass p-6 rounded-2xl">
+          <h2 class="text-lg font-semibold mb-4">Recent Activity</h2>
           <ul class="space-y-3">
             <li class="flex items-center justify-between p-3 rounded-lg bg-slate-800/40">
               <div>
@@ -103,8 +89,8 @@
                 <p class="text-xs text-slate-400">From: 0x3a...f92b</p>
               </div>
               <div class="text-right">
-                <p class="font-medium">+120</p>
-                <p class="text-sm text-slate-400">Oct 30, 2025</p>
+                <p class="font-medium text-green-400">+120</p>
+                <p class="text-xs text-slate-400">Oct 30, 2025</p>
               </div>
             </li>
             <li class="flex items-center justify-between p-3 rounded-lg bg-slate-800/40">
@@ -113,103 +99,17 @@
                 <p class="text-xs text-slate-400">Model: Blue Diamond</p>
               </div>
               <div class="text-right">
-                <p class="font-medium">-3,000</p>
-                <p class="text-sm text-slate-400">Oct 25, 2025</p>
+                <p class="font-medium text-red-400">-3,000</p>
+                <p class="text-xs text-slate-400">Oct 25, 2025</p>
               </div>
             </li>
           </ul>
         </div>
       </section>
-       <!-- Right column: widgets -->
+
+      <!-- Right: Widgets -->
       <aside class="space-y-6">
-        <!-- 💎 DiamondMiner Tokenomics -->
-<section id="tokenomics" class="mt-10">
-  <div class="text-center mb-8">
-    <h2 class="text-3xl font-bold text-cyan-400 drop-shadow-lg">💎 $DIA Tokenomics</h2>
-    <p class="text-slate-400 text-sm">Built on Solana — Total Supply: 1,000,000,000 $DIA</p>
-  </div>
-
-  <div class="grid md:grid-cols-3 gap-6">
-    <!-- Card 1 -->
-    <div class="bg-slate-800/50 rounded-2xl p-6 shadow-lg border border-cyan-500/20 hover:border-cyan-400/50 transition">
-      <div class="relative flex justify-center mb-4">
-        <svg width="100" height="100" class="animate-pulse">
-          <circle cx="50" cy="50" r="45" stroke="#00faff30" stroke-width="8" fill="none"></circle>
-          <circle cx="50" cy="50" r="45" stroke="#00faff" stroke-width="8" fill="none" stroke-dasharray="282" stroke-dashoffset="183" class="animate-[glow_2s_ease-in-out_infinite_alternate]"></circle>
-        </svg>
-        <div class="absolute inset-0 flex items-center justify-center font-bold text-cyan-300 text-lg">35%</div>
-      </div>
-      <h3 class="text-cyan-400 font-semibold">Community Rewards & Mining Pool</h3>
-      <p class="text-slate-400 text-sm mt-1">Rewards for miners, stakers, and early participants.</p>
-    </div>
-
-    <!-- Card 2 -->
-    <div class="bg-slate-800/50 rounded-2xl p-6 shadow-lg border border-cyan-500/20 hover:border-cyan-400/50 transition">
-      <div class="relative flex justify-center mb-4">
-        <svg width="100" height="100" class="animate-pulse">
-          <circle cx="50" cy="50" r="45" stroke="#00faff30" stroke-width="8" fill="none"></circle>
-          <circle cx="50" cy="50" r="45" stroke="#00faff" stroke-width="8" fill="none" stroke-dasharray="282" stroke-dashoffset="226"></circle>
-        </svg>
-        <div class="absolute inset-0 flex items-center justify-center font-bold text-cyan-300 text-lg">20%</div>
-      </div>
-      <h3 class="text-cyan-400 font-semibold">Liquidity & Exchange Listings</h3>
-      <p class="text-slate-400 text-sm mt-1">Used for DEX/CEX liquidity and growth.</p>
-    </div>
-
-    <!-- Card 3 -->
-    <div class="bg-slate-800/50 rounded-2xl p-6 shadow-lg border border-cyan-500/20 hover:border-cyan-400/50 transition">
-      <div class="relative flex justify-center mb-4">
-        <svg width="100" height="100" class="animate-pulse">
-          <circle cx="50" cy="50" r="45" stroke="#00faff30" stroke-width="8" fill="none"></circle>
-          <circle cx="50" cy="50" r="45" stroke="#00faff" stroke-width="8" fill="none" stroke-dasharray="282" stroke-dashoffset="240"></circle>
-        </svg>
-        <div class="absolute inset-0 flex items-center justify-center font-bold text-cyan-300 text-lg">15%</div>
-      </div>
-      <h3 class="text-cyan-400 font-semibold">Team & Advisors</h3>
-      <p class="text-slate-400 text-sm mt-1">Development fund vested over 24 months.</p>
-    </div>
-
-    <!-- Card 4 -->
-    <div class="bg-slate-800/50 rounded-2xl p-6 shadow-lg border border-cyan-500/20 hover:border-cyan-400/50 transition">
-      <div class="relative flex justify-center mb-4">
-        <svg width="100" height="100" class="animate-pulse">
-          <circle cx="50" cy="50" r="45" stroke="#00faff30" stroke-width="8" fill="none"></circle>
-          <circle cx="50" cy="50" r="45" stroke="#00faff" stroke-width="8" fill="none" stroke-dasharray="282" stroke-dashoffset="254"></circle>
-        </svg>
-        <div class="absolute inset-0 flex items-center justify-center font-bold text-cyan-300 text-lg">10%</div>
-      </div>
-      <h3 class="text-cyan-400 font-semibold">Treasury & Ecosystem Growth</h3>
-      <p class="text-slate-400 text-sm mt-1">Partnerships, marketing, and ecosystem grants.</p>
-    </div>
-
-    <!-- Card 5 -->
-    <div class="bg-slate-800/50 rounded-2xl p-6 shadow-lg border border-cyan-500/20 hover:border-cyan-400/50 transition">
-      <div class="relative flex justify-center mb-4">
-        <svg width="100" height="100" class="animate-pulse">
-          <circle cx="50" cy="50" r="45" stroke="#00faff30" stroke-width="8" fill="none"></circle>
-          <circle cx="50" cy="50" r="45" stroke="#00faff" stroke-width="8" fill="none" stroke-dasharray="282" stroke-dashoffset="254"></circle>
-        </svg>
-        <div class="absolute inset-0 flex items-center justify-center font-bold text-cyan-300 text-lg">10%</div>
-      </div>
-      <h3 class="text-cyan-400 font-semibold">Play-to-Earn & NFT Integration</h3>
-      <p class="text-slate-400 text-sm mt-1">In-game and NFT-based rewards for players.</p>
-    </div>
-
-    <!-- Card 6 -->
-    <div class="bg-slate-800/50 rounded-2xl p-6 shadow-lg border border-cyan-500/20 hover:border-cyan-400/50 transition">
-      <div class="relative flex justify-center mb-4">
-        <svg width="100" height="100" class="animate-pulse">
-          <circle cx="50" cy="50" r="45" stroke="#00faff30" stroke-width="8" fill="none"></circle>
-          <circle cx="50" cy="50" r="45" stroke="#00faff" stroke-width="8" fill="none" stroke-dasharray="282" stroke-dashoffset="268"></circle>
-        </svg>
-        <div class="absolute inset-0 flex items-center justify-center font-bold text-cyan-300 text-lg">5%</div>
-      </div>
-      <h3 class="text-cyan-400 font-semibold">Community Event Prize Pool</h3>
-      <p class="text-slate-400 text-sm mt-1">Rewards for competitions and special events.</p>
-    </div>
-  </div>
-</section>
-        <div class="p-6 rounded-2xl glass shadow-lg">
+        <div class="glass p-6 rounded-2xl shadow-lg">
           <h3 class="text-sm text-slate-400 mb-2">Token Price</h3>
           <div class="flex items-baseline gap-3">
             <p class="text-3xl font-bold">$0.032</p>
@@ -219,35 +119,13 @@
             Price chart (placeholder)
           </div>
         </div>
-
-        <div class="p-6 rounded-2xl glass shadow-lg">
-          <h3 class="text-sm text-slate-400 mb-2">Quick Actions</h3>
-          <div class="flex flex-col gap-3">
-            <button class="py-2 rounded-md glass">Stake $DIA</button>
-            <button class="py-2 rounded-md glass">Buy Miners</button>
-            <button class="py-2 rounded-md glass">View Marketplace</button>
-          </div>
-        </div>
-
-        <div class="p-4 rounded-2xl glass text-sm text-slate-400 shadow-lg">
-          <p class="font-medium text-slate-100 mb-2">Social</p>
-          <a href="https://x.com/Diamonminer" class="block underline" target="_blank" rel="noopener">x.com/Diamonminer</a>
-        </div>
       </aside>
     </main>
-
-    <footer class="mt-10 text-center text-sm text-slate-500">
-      <p>Prototype UI — not live. &copy; DiamonMiner</p>
-    </footer>
   </div>
 
-  <script>
-    // small demo interactions (no wallet integration)
-    document.querySelectorAll('button').forEach(b => {
-      b.addEventListener('click', (e) => {
-        alert('This is a prototype UI. Interactions are placeholders.');
-      });
-    });
-  </script>
+  <!-- Footer -->
+  <footer class="text-center py-6 text-xs text-slate-500">
+    © 2025 DiamondMiner — All Rights Reserved.
+  </footer>
 </body>
 </html>
