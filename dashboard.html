@@ -176,6 +176,87 @@
     `;
   }
 </script>
+  <!-- ROI CALCULATOR SECTION (with dynamic rate scaling) -->
+<section id="roi-calculator" class="bg-gradient-to-b from-black to-gray-900 py-16 px-6 text-center">
+  <h2 class="text-4xl font-bold text-cyan-400 mb-8 drop-shadow-[0_0_10px_#00fff7]">
+    💎 ROI Calculator
+  </h2>
+
+  <div class="max-w-lg mx-auto bg-gray-800/40 border border-cyan-400/30 rounded-2xl shadow-lg p-8 backdrop-blur-sm">
+    <p class="text-gray-300 mb-6 text-sm">
+      Estimate your returns based on live mining rate and player activity.  
+      As more players join, mining difficulty increases slightly.
+    </p>
+
+    <div class="flex flex-col gap-4 items-center">
+      <input
+        type="number"
+        id="solInput"
+        step="0.01"
+        placeholder="Enter SOL amount (e.g. 0.3)"
+        class="w-3/4 p-3 rounded-lg bg-black/60 text-cyan-200 text-center border border-cyan-400/40 focus:outline-none focus:border-cyan-400"
+      />
+
+      <input
+        type="number"
+        id="playerCount"
+        step="1"
+        placeholder="Enter active players (e.g. 100)"
+        class="w-3/4 p-3 rounded-lg bg-black/60 text-cyan-200 text-center border border-cyan-400/40 focus:outline-none focus:border-cyan-400"
+      />
+
+      <button
+        onclick="calculateROI()"
+        class="px-6 py-3 bg-gradient-to-r from-cyan-400 to-blue-500 text-black font-bold rounded-lg shadow-md hover:scale-105 transition-transform duration-300"
+      >
+        Calculate ROI
+      </button>
+    </div>
+
+    <div id="results" class="mt-6 text-gray-200"></div>
+  </div>
+</section>
+
+<script>
+  function calculateROI() {
+    const sol = parseFloat(document.getElementById('solInput').value);
+    const players = parseInt(document.getElementById('playerCount').value);
+    const results = document.getElementById('results');
+
+    if (isNaN(sol) || sol <= 0 || isNaN(players) || players <= 0) {
+      results.innerHTML = '<p class="text-red-400">Please enter valid values for SOL and active players.</p>';
+      return;
+    }
+
+    // Base constants
+    const baseInvestment = 0.3; // SOL
+    const roiDurationDays = 3;
+    const totalDIAForBase = 300000; // 0.3 SOL = 300,000 DIA
+    const dailyDIABase = totalDIAForBase / roiDurationDays; // 100,000 DIA/day
+    const perSecondRateBase = dailyDIABase / (24 * 3600); // 1.157 DIA/sec
+
+    // Dynamic difficulty
+    const reductionPerPlayer = 0.005; // DIA/sec per extra player
+    const effectiveRate = Math.max(perSecondRateBase - (players - 1) * reductionPerPlayer, 0);
+
+    // Scaled ROI
+    const multiplier = sol / baseInvestment;
+    const dailyDIA = effectiveRate * 24 * 3600 * multiplier;
+    const totalDIA = dailyDIA * roiDurationDays;
+    const roiPercent = 100;
+
+    results.innerHTML = `
+      <p><strong>Investment:</strong> ${sol} SOL</p>
+      <p><strong>Active Players:</strong> ${players}</p>
+      <p><strong>Mining Rate:</strong> ${effectiveRate.toFixed(3)} $DIA/sec</p>
+      <p><strong>Daily Yield:</strong> ${dailyDIA.toLocaleString()} $DIA/day</p>
+      <p><strong>Total in 3 Days:</strong> ${totalDIA.toLocaleString()} $DIA</p>
+      <p><strong>ROI Duration:</strong> ${roiDurationDays} Days</p>
+      <p><strong>ROI:</strong> ${roiPercent}% Return (base before difficulty)</p>
+    `;
+  }
+</script>
+
 
   
 
