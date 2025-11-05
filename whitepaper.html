@@ -3,121 +3,94 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DiamondMiner Whitepaper</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <title>DiamondMiner | Whitepaper</title>
   <style>
     body {
-      background: radial-gradient(circle at top, #0a0a0a 0%, #000000 100%);
-      color: white;
+      margin: 0;
       font-family: 'Poppins', sans-serif;
+      background: radial-gradient(circle at top, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      overflow-x: hidden;
     }
-    .section {
-      background: rgba(15, 23, 42, 0.4);
-      border: 1px solid rgba(0,255,255,0.2);
-      border-radius: 1rem;
-      padding: 2rem;
-      margin-bottom: 2rem;
-      box-shadow: 0 0 20px rgba(0,255,255,0.1);
-      transition: 0.3s ease;
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 50px;
+      background: rgba(0, 0, 0, 0.5);
+      border-bottom: 1px solid rgba(0, 255, 255, 0.3);
     }
-    .section:hover {
-      box-shadow: 0 0 30px rgba(0,255,255,0.3);
+    nav a {
+      color: #00ffff;
+      text-decoration: none;
+      margin: 0 20px;
+      font-weight: 500;
+      transition: 0.3s;
     }
-    .glow {
-      text-shadow: 0 0 15px #00ffff, 0 0 30px #00ffff;
+    nav a:hover {
+      color: #fff;
+      text-shadow: 0 0 10px #00ffff;
+    }
+    .container {
+      max-width: 1000px;
+      margin: 100px auto;
+      padding: 40px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      box-shadow: 0 0 40px rgba(0, 255, 255, 0.2);
+    }
+    h1, h2 {
+      color: #00ffff;
+      text-shadow: 0 0 10px #00ffff;
+    }
+    p {
+      line-height: 1.8;
+      color: #ddd;
     }
   </style>
 </head>
 <body>
-
-  <!-- Navbar -->
-  <nav class="fixed top-0 w-full bg-black bg-opacity-60 border-b border-cyan-500 text-white py-4 z-50">
-    <div class="max-w-6xl mx-auto flex justify-between items-center px-6">
-      <div class="flex items-center space-x-2">
-        <img src="images/diamond-icon.png" alt="Diamond Icon" class="w-8 h-8">
-        <span class="text-cyan-400 font-bold text-xl">DiamondMiner</span>
-      </div>
-      <ul class="flex space-x-8">
-        <li><a href="index.html" class="hover:text-cyan-400 transition">Home</a></li>
-        <li><a href="dashboard.html" class="hover:text-cyan-400 transition">Dashboard</a></li>
-        <li><a href="marketplace.html" class="hover:text-cyan-400 transition">Marketplace</a></li>
-        <li><a href="tokenomics.html" class="hover:text-cyan-400 transition">Tokenomics</a></li>
-        <li><a href="whitepaper.html" class="text-cyan-400 font-semibold">Whitepaper</a></li>
-      </ul>
+  <nav>
+    <div class="logo">💎 DiamondMiner</div>
+    <div class="links">
+      <a href="index.html">Home</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="tokenomics.html">Tokenomics</a>
+      <a href="marketplace.html">Marketplace</a>
+      <a href="whitepaper.html">Whitepaper</a>
     </div>
   </nav>
 
-  <main class="pt-32 pb-20 max-w-5xl mx-auto px-6">
+  <div class="container">
+    <h1>DiamondMiner Whitepaper</h1>
+    <p>Welcome to the DiamondMiner ecosystem — a decentralized mining simulation built on Solana, powered by the $DIA token.</p>
 
-    <h1 class="text-5xl font-extrabold text-center text-cyan-400 glow mb-10">📜 DiamondMiner Whitepaper</h1>
+    <h2>Mission</h2>
+    <p>To bring gamified mining to blockchain. Each player joins the network, contributes resources, and earns rewards through mining operations represented by digital assets.</p>
 
-    <section class="section">
-      <h2 class="text-3xl font-bold text-cyan-300 mb-4">1. Introduction</h2>
-      <p class="text-gray-300 leading-relaxed">
-        DiamondMiner is a decentralized Play-to-Earn (P2E) mining ecosystem built on the Solana blockchain.
-        Powered by the $DIA token, the project allows users to mine, stake, and trade digital diamonds while
-        participating in community-driven growth and governance.
-      </p>
-    </section>
+    <h2>Token Utility</h2>
+    <p>$DIA serves as the backbone of the DiamondMiner world. It fuels mining upgrades, marketplace trades, and community events.</p>
 
-    <section class="section">
-      <h2 class="text-3xl font-bold text-cyan-300 mb-4">2. Mission & Vision</h2>
-      <p class="text-gray-300 leading-relaxed">
-        Our mission is to revolutionize decentralized mining by blending blockchain transparency, NFT utility,
-        and gamified economics. DiamondMiner envisions a world where every player can become a prospector in the
-        digital frontier — mining, evolving, and trading diamonds with real on-chain value.
-      </p>
-    </section>
+    <h2>Economics</h2>
+    <p>Total Supply: 1,000,000,000 DIA</p>
+    <ul>
+      <li>Mining Rewards – 50%</li>
+      <li>Liquidity & Partnerships – 25%</li>
+      <li>Development – 15%</li>
+      <li>Community Event Pool – 5%</li>
+      <li>Team & Advisors – 5%</li>
+    </ul>
 
-    <section class="section">
-      <h2 class="text-3xl font-bold text-cyan-300 mb-4">3. The $DIA Token</h2>
-      <p class="text-gray-300 mb-4">
-        $DIA (Diamond Token) serves as the core currency of the DiamondMiner ecosystem.
-      </p>
-      <ul class="text-gray-300 list-disc list-inside space-y-2">
-        <li>Total Supply: <span class="text-cyan-400 font-semibold">1,000,000,000 DIA</span></li>
-        <li>Utility: Mining rewards, NFT transactions, staking, and governance</li>
-        <li>Network: Solana blockchain for speed and low gas fees</li>
-        <li>Token Standard: SPL</li>
-      </ul>
-    </section>
+    <h2>Roadmap Summary</h2>
+    <p>
+      <strong>Q4 2025:</strong> Launch of DiamondMiner Platform<br>
+      <strong>Q1 2026:</strong> Marketplace and NFT Integration<br>
+      <strong>Q2 2026:</strong> Staking and DAO Governance<br>
+      <strong>Q3 2026:</strong> Full-scale Game Expansion
+    </p>
 
-    <section class="section">
-      <h2 class="text-3xl font-bold text-cyan-300 mb-4">4. Ecosystem Features</h2>
-      <ul class="text-gray-300 list-disc list-inside space-y-2">
-        <li><span class="text-cyan-400 font-semibold">Mining Dashboard:</span> Mine digital diamonds and earn rewards.</li>
-        <li><span class="text-cyan-400 font-semibold">NFT Marketplace:</span> Trade mining tools, boosters, and collectibles.</li>
-        <li><span class="text-cyan-400 font-semibold">Staking Pools:</span> Stake $DIA tokens to earn passive income.</li>
-        <li><span class="text-cyan-400 font-semibold">Community Events:</span> Compete for rewards in global mining tournaments.</li>
-      </ul>
-    </section>
-
-    <section class="section">
-      <h2 class="text-3xl font-bold text-cyan-300 mb-4">5. Roadmap Overview</h2>
-      <p class="text-gray-300 leading-relaxed">
-        The DiamondMiner development roadmap includes four key phases — from foundation and token launch, to NFT integration, DAO governance, and metaverse expansion.
-      </p>
-      <p class="text-gray-400 mt-2">See the full roadmap on the <a href="index.html#roadmap" class="text-cyan-400 underline hover:text-cyan-300">main site</a>.</p>
-    </section>
-
-    <section class="section">
-      <h2 class="text-3xl font-bold text-cyan-300 mb-4">6. Community & Governance</h2>
-      <p class="text-gray-300 leading-relaxed">
-        DiamondMiner is community-first. $DIA holders will participate in governance decisions, including protocol
-        updates, staking yields, and ecosystem partnerships, ensuring full decentralization and fairness.
-      </p>
-    </section>
-
-    <section class="section text-center">
-      <h2 class="text-3xl font-bold text-cyan-300 mb-4">7. Conclusion</h2>
-      <p class="text-gray-300 leading-relaxed">
-        DiamondMiner is not just a project — it’s a movement towards player-owned mining economies.
-        Join us as we dig into the digital core of blockchain innovation.
-      </p>
-      <p class="text-cyan-400 font-semibold mt-4">#MineTheFuture 💎</p>
-    </section>
-
-  </main>
-
+    <h2>Conclusion</h2>
+    <p>DiamondMiner is more than a token — it’s a decentralized mining revolution powered by community and innovation.</p>
+  </div>
 </body>
 </html>
