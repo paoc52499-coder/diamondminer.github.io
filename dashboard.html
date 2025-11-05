@@ -9,17 +9,29 @@
 </head>
 <body class="bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 text-white min-h-screen">
 
-  <!-- Header -->
-  <header class="max-w-6xl mx-auto px-6 py-6 flex items-center justify-between">
-    <h1 class="text-3xl font-bold text-cyan-400">💎 DiamondMiner</h1>
-    <nav class="flex gap-6 text-sm">
-      <a href="index.html" class="hover:text-cyan-300">Home</a>
-      <a href="dashboard.html" class="hover:text-cyan-300">Dashboard</a>
-      <a href="marketplace.html" class="hover:text-cyan-300">Marketplace</a>
-      <a href="tokenomics.html" class="hover:text-cyan-300">Tokenomics</a>
-      <a href="whitepaper.html" class="hover:text-cyan-300">Whitepaper</a>
+ <!-- NAVBAR (Unified Design) -->
+<header class="fixed top-0 left-0 w-full bg-[#05060d]/90 backdrop-blur-sm z-50 border-b border-white/5">
+  <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
+    <!-- Logo -->
+    <a href="index.html" class="flex items-center gap-3">
+      <img src="images/diamond_logo.png" alt="DiamondMiner" class="w-8 h-8 animate-pulse">
+      <span class="text-xl font-bold text-cyan-400">DiamondMiner</span>
+    </a>
+
+    <!-- Navigation Links -->
+    <nav class="flex gap-8 text-sm font-medium">
+      <a href="index.html" class="text-gray-300 hover:text-cyan-400 transition-colors duration-200">Home</a>
+      <a href="dashboard.html" class="text-gray-300 hover:text-cyan-400 transition-colors duration-200">Dashboard</a>
+      <a href="marketplace.html" class="text-gray-300 hover:text-cyan-400 transition-colors duration-200">Marketplace</a>
+      <a href="tokenomics.html" class="text-gray-300 hover:text-cyan-400 transition-colors duration-200">Tokenomics</a>
+      <a href="whitepaper.html" class="text-gray-300 hover:text-cyan-400 transition-colors duration-200">Whitepaper</a>
     </nav>
-  </header>
+  </div>
+</header>
+
+<!-- Add top padding so content doesn’t hide behind navbar -->
+<div class="pt-20"></div>
+
 
   <!-- Hero Section -->
   <section class="text-center mt-20">
