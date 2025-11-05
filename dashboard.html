@@ -1,207 +1,52 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>DiamondMiner Dashboard – $DIA</title>
-
-  <!-- Tailwind -->
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <style>
-    /* Animated glow for the diamond logo */
-    @keyframes glow {
-      0% { filter: drop-shadow(0 0 6px rgba(59,130,246,0.6)); transform: translateY(0); }
-      50% { filter: drop-shadow(0 0 18px rgba(99,102,241,0.85)); transform: translateY(-4px); }
-      100% { filter: drop-shadow(0 0 6px rgba(59,130,246,0.6)); transform: translateY(0); }
-    }
-
-    .glow {
-      animation: glow 2.8s infinite ease-in-out;
-    }
-
-    /* subtle card backdrop */
-    .glass {
-      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
-      backdrop-filter: blur(6px);
-      border: 1px solid rgba(255,255,255,0.06);
-    }
-  </style>
-</head>
-<body class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 min-h-screen text-slate-100 antialiased">
-
-  <!-- Header -->
-  <div class="max-w-6xl mx-auto px-6 py-10">
-    <header class="flex items-center justify-between mb-8">
-      <div class="flex items-center gap-4">
-        <div class="w-12 h-12 p-2 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-500 shadow-lg glow">
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
-            <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="white" fill-opacity="0.95"/>
-          </svg>
-        </div>
-        <div>
-          <h1 class="text-2xl font-semibold">DiamondMiner Dashboard</h1>
-          <p class="text-sm text-slate-400">
-            Token: <span class="font-medium text-indigo-300">$DIA</span> —
-            <a href="https://x.com/Diamondminer" class="text-indigo-200 underline" target="_blank">Follow us</a>
-          </p>
-        </div>
-      </div>
-      <nav class="flex gap-6 text-sm">
-        <a href="index.html" class="hover:text-indigo-300">Home</a>
-        <a href="dashboard.html" class="hover:text-indigo-300">Dashboard</a>
-        <a href="marketplace.html" class="hover:text-indigo-300">Marketplace</a>
-        <a href="tokenomics.html" class="hover:text-indigo-300">Tokenomics</a>
-        <a href="whitepaper.html" class="hover:text-indigo-300">Whitepaper</a>
-      </nav>
-    </header>
-
-    <!-- Main Dashboard Content -->
-    <main class="grid md:grid-cols-3 gap-8">
-      <!-- Left: Account Summary -->
-      <section class="md:col-span-2 space-y-6">
-        <div class="glass p-6 rounded-2xl">
-          <h2 class="text-lg font-semibold mb-3">Account Summary</h2>
-          <div class="grid grid-cols-3 gap-6 text-center">
-            <div>
-              <p class="text-sm text-slate-400">Balance</p>
-              <p class="text-2xl font-bold">$1,234.56</p>
-              <p class="text-xs text-slate-400">($DIA)</p>
-            </div>
-            <div>
-              <p class="text-sm text-slate-400">Active Miners</p>
-              <p class="text-2xl font-bold">12</p>
-            </div>
-            <div>
-              <p class="text-sm text-slate-400">Network</p>
-              <p class="text-2xl font-bold">Solana</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Recent Activity -->
-        <div class="glass p-6 rounded-2xl">
-          <h2 class="text-lg font-semibold mb-4">Recent Activity</h2>
-          <ul class="space-y-3">
-            <li class="flex items-center justify-between p-3 rounded-lg bg-slate-800/40">
-              <div>
-                <p class="text-sm">Received $DIA</p>
-                <p class="text-xs text-slate-400">From: 0x3a...f92b</p>
-              </div>
-              <div class="text-right">
-                <p class="font-medium text-green-400">+120</p>
-                <p class="text-xs text-slate-400">Oct 30, 2025</p>
-              </div>
-            </li>
-            <li class="flex items-center justify-between p-3 rounded-lg bg-slate-800/40">
-              <div>
-                <p class="text-sm">Miner Purchased</p>
-                <p class="text-xs text-slate-400">Model: Blue Diamond</p>
-              </div>
-              <div class="text-right">
-                <p class="font-medium text-red-400">-3,000</p>
-                <p class="text-xs text-slate-400">Oct 25, 2025</p>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <!-- Right: Widgets -->
-      <aside class="space-y-6">
-        <div class="glass p-6 rounded-2xl shadow-lg">
-          <h3 class="text-sm text-slate-400 mb-2">Token Price</h3>
-          <div class="flex items-baseline gap-3">
-            <p class="text-3xl font-bold">$0.032</p>
-            <p class="text-sm text-green-400">+4.2%</p>
-          </div>
-          <div class="mt-4 h-28 rounded-md bg-slate-800/30 flex items-center justify-center text-sm text-slate-400">
-            Price chart (placeholder)
-          </div>
-        </div>
-      </aside>
-    </main>
-  </div>
- <!-- ROI CALCULATOR SECTION (Final Clean Version) -->
-<section id="roi-calculator" class="bg-gradient-to-b from-black to-gray-900 py-16 px-6 text-center">
-  <h2 class="text-4xl font-bold text-cyan-400 mb-8 drop-shadow-[0_0_10px_#00fff7]">
-    💎 ROI Calculator
-  </h2>
-
-  <div class="max-w-lg mx-auto bg-gray-800/40 border border-cyan-400/30 rounded-2xl shadow-lg p-8 backdrop-blur-sm">
+<!-- Wallet Modal -->
+<div id="walletModal" class="fixed inset-0 flex items-center justify-center bg-black/70 hidden z-50">
+  <div class="bg-gray-900 p-8 rounded-2xl text-center shadow-2xl border border-cyan-400/40 w-[90%] max-w-sm">
+    <h2 class="text-2xl font-bold text-cyan-400 mb-4">Connect Your Wallet</h2>
     <p class="text-gray-300 mb-6 text-sm">
-      Estimate your DiamondMiner returns. Enter your SOL investment below to see your expected $DIA earnings over 3 days.
+      Please connect your Solana wallet to access mining and rewards.
     </p>
 
-    <div class="flex flex-col gap-4 items-center">
-      <input
-        type="number"
-        id="solInput"
-        step="0.01"
-        placeholder="Enter SOL amount (e.g. 0.3)"
-        class="w-3/4 p-3 rounded-lg bg-black/60 text-cyan-200 text-center border border-cyan-400/40 focus:outline-none focus:border-cyan-400"
-      />
+    <button
+      id="connectWalletBtn"
+      class="w-full py-3 bg-gradient-to-r from-cyan-400 to-blue-500 text-black font-bold rounded-lg shadow-md hover:scale-105 transition-transform duration-300"
+    >
+      Connect Wallet
+    </button>
 
-      <button
-        onclick="calculateROI()"
-        class="px-6 py-3 bg-gradient-to-r from-cyan-400 to-blue-500 text-black font-bold rounded-lg shadow-md hover:scale-105 transition-transform duration-300"
-      >
-        Calculate ROI
-      </button>
-    </div>
-
-    <div id="results" class="mt-6 text-gray-200"></div>
+    <button
+      onclick="closeWalletModal()"
+      class="mt-4 text-gray-400 hover:text-cyan-300 text-sm"
+    >
+      Cancel
+    </button>
   </div>
-</section>
+</div>
 
+<!-- Wallet Script -->
 <script>
-  function calculateROI() {
-    const sol = parseFloat(document.getElementById('solInput').value);
-    const results = document.getElementById('results');
-
-    if (isNaN(sol) || sol <= 0) {
-      results.innerHTML = '<p class="text-red-400">Please enter a valid SOL amount.</p>';
-      return;
-    }
-
-    // 🔹 Base configuration
-    const baseInvestment = 0.3; // SOL for baseline
-    const roiDurationDays = 3;  // 3-day ROI
-    const totalDIAForBase = 300000; // 0.3 SOL = 300,000 DIA
-    const dailyDIABase = totalDIAForBase / roiDurationDays; // 100,000 DIA/day
-    const perSecondRateBase = dailyDIABase / (24 * 3600); // Base mining rate
-
-    // 🔹 Simulated global active players (auto — can later be dynamic)
-    const activePlayers = 125;
-
-    // 🔹 Difficulty adjustment
-    const reductionPerPlayer = 0.005;
-    const effectiveRate = Math.max(perSecondRateBase - (activePlayers - 1) * reductionPerPlayer, 0);
-
-    // 🔹 ROI scaling based on SOL investment
-    const multiplier = sol / baseInvestment;
-    const dailyDIA = effectiveRate * 24 * 3600 * multiplier;
-    const totalDIA = dailyDIA * roiDurationDays;
-
-    // 🔹 Display results
-    results.innerHTML = `
-      <p><strong>Investment:</strong> ${sol} SOL</p>
-      <p><strong>Network Active Miners:</strong> ${activePlayers}</p>
-      <p><strong>Mining Rate:</strong> ${effectiveRate.toFixed(3)} $DIA/sec</p>
-      <p><strong>Daily Yield:</strong> ${dailyDIA.toLocaleString()} $DIA/day</p>
-      <p><strong>Total in 3 Days:</strong> ${totalDIA.toLocaleString()} $DIA</p>
-    `;
+  function openWalletModal() {
+    document.getElementById("walletModal").classList.remove("hidden");
   }
+
+  function closeWalletModal() {
+    document.getElementById("walletModal").classList.add("hidden");
+  }
+
+  async function connectWallet() {
+    if (window.solana && window.solana.isPhantom) {
+      try {
+        const response = await window.solana.connect();
+        const walletAddress = response.publicKey.toString();
+        localStorage.setItem("walletAddress", walletAddress);
+        alert("✅ Wallet Connected: " + walletAddress);
+        closeWalletModal();
+      } catch (err) {
+        console.error("Wallet connection cancelled:", err);
+      }
+    } else {
+      alert("⚠️ Phantom wallet not found. Please install it from https://phantom.app/");
+    }
+  }
+
+  document.getElementById("connectWalletBtn").addEventListener("click", connectWallet);
 </script>
-
-
-
-
-  
-
-  <!-- Footer -->
-  <footer class="text-center py-6 text-xs text-slate-500">
-    © 2025 DiamondMiner — All Rights Reserved.
-  </footer>
-</body>
-</html>
