@@ -23,29 +23,28 @@
 </head>
 <body class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 min-h-screen text-slate-100 antialiased">
 
-  <!-- NAVBAR -->
-  <nav class="bg-slate-900/70 backdrop-blur-md fixed w-full z-50 shadow-lg border-b border-cyan-400/20">
-    <div class="max-w-7xl mx-auto px-6 py-3 flex justify-between items-center">
-      <a href="index.html" class="flex items-center space-x-3">
-        <!-- small diamond icon -->
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" class="animate-pulse">
-          <path d="M12 2L15 8L21 9L16 13L17 20L12 16L7 20L8 13L3 9L9 8L12 2Z" fill="#00faff" fill-opacity="0.9"/>
-        </svg>
-        <span class="text-cyan-400 font-bold text-lg tracking-wide">DiamondMiner</span>
-      </a>
+ <!-- NAVBAR (Unified Design) -->
+<header class="fixed top-0 left-0 w-full bg-[#05060d]/90 backdrop-blur-sm z-50 border-b border-white/5">
+  <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
+    <!-- Logo -->
+    <a href="index.html" class="flex items-center gap-3">
+      <img src="images/diamond-icon.png" alt="DiamondMiner" class="w-8 h-8 animate-pulse">
+      <span class="text-xl font-bold text-cyan-400">DiamondMiner</span>
+    </a>
 
-      <ul class="flex space-x-6 text-slate-300 font-medium">
-        <li><a href="index.html" class="hover:text-cyan-400 transition">Home</a></li>
-        <li><a href="index.html#dashboard" class="hover:text-cyan-400 transition">Dashboard</a></li>
-        <li><a href="marketplace.html" class="hover:text-cyan-400 transition">Marketplace</a></li>
-        <li><a href="tokenomics.html" class="text-cyan-400 font-semibold">Tokenomics</a></li>
-        <li><a href="whitepaper.html" class="hover:text-cyan-400 transition">Whitepaper</a></li>
-      </ul>
-    </div>
-  </nav>
+    <!-- Navigation Links -->
+    <nav class="flex gap-8 text-sm font-medium">
+      <a href="index.html" class="text-gray-300 hover:text-cyan-400 transition-colors duration-200">Home</a>
+      <a href="dashboard.html" class="text-gray-300 hover:text-cyan-400 transition-colors duration-200">Dashboard</a>
+      <a href="marketplace.html" class="text-gray-300 hover:text-cyan-400 transition-colors duration-200">Marketplace</a>
+      <a href="tokenomics.html" class="text-gray-300 hover:text-cyan-400 transition-colors duration-200">Tokenomics</a>
+      <a href="whitepaper.html" class="text-gray-300 hover:text-cyan-400 transition-colors duration-200">Whitepaper</a>
+    </nav>
+  </div>
+</header>
 
-  <!-- spacing so navbar doesn't cover content -->
-  <div class="pt-20"></div>
+<!-- Add top padding so content doesn’t hide behind navbar -->
+<div class="pt-20"></div>
 
   <!-- PAGE CONTENT -->
   <main class="max-w-6xl mx-auto px-6 py-12">
