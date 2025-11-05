@@ -220,42 +220,43 @@
 <script>
   function calculateROI() {
     const sol = parseFloat(document.getElementById('solInput').value);
-    const players = parseInt(document.getElementById('playerCount').value);
     const results = document.getElementById('results');
 
-    if (isNaN(sol) || sol <= 0 || isNaN(players) || players <= 0) {
-      results.innerHTML = '<p class="text-red-400">Please enter valid values for SOL and active players.</p>';
+    if (isNaN(sol) || sol <= 0) {
+      results.innerHTML = '<p class="text-red-400">Please enter a valid SOL amount.</p>';
       return;
     }
 
-    // Base constants
-    const baseInvestment = 0.3; // SOL
-    const roiDurationDays = 3;
+    // 🔹 Base configuration
+    const baseInvestment = 0.3; // SOL for baseline
+    const roiDurationDays = 3;  // 3-day ROI
     const totalDIAForBase = 300000; // 0.3 SOL = 300,000 DIA
     const dailyDIABase = totalDIAForBase / roiDurationDays; // 100,000 DIA/day
     const perSecondRateBase = dailyDIABase / (24 * 3600); // 1.157 DIA/sec
 
-    // Dynamic difficulty
-    const reductionPerPlayer = 0.005; // DIA/sec per extra player
-    const effectiveRate = Math.max(perSecondRateBase - (players - 1) * reductionPerPlayer, 0);
+    // 🔹 Simulated active players (you can later make this dynamic)
+    const activePlayers = 125; // example: current total miners
 
-    // Scaled ROI
+    // 🔹 Mining difficulty adjustment
+    const reductionPerPlayer = 0.005; // each player reduces global rate
+    const effectiveRate = Math.max(perSecondRateBase - (activePlayers - 1) * reductionPerPlayer, 0);
+
+    // 🔹 ROI scaling based on SOL investment
     const multiplier = sol / baseInvestment;
     const dailyDIA = effectiveRate * 24 * 3600 * multiplier;
     const totalDIA = dailyDIA * roiDurationDays;
-    const roiPercent = 100;
 
+    // 🔹 Display results
     results.innerHTML = `
       <p><strong>Investment:</strong> ${sol} SOL</p>
-      <p><strong>Active Players:</strong> ${players}</p>
+      <p><strong>Active Players (network):</strong> ${activePlayers}</p>
       <p><strong>Mining Rate:</strong> ${effectiveRate.toFixed(3)} $DIA/sec</p>
       <p><strong>Daily Yield:</strong> ${dailyDIA.toLocaleString()} $DIA/day</p>
       <p><strong>Total in 3 Days:</strong> ${totalDIA.toLocaleString()} $DIA</p>
-      <p><strong>ROI Duration:</strong> ${roiDurationDays} Days</p>
-      <p><strong>ROI:</strong> ${roiPercent}% Return (base before difficulty)</p>
     `;
   }
 </script>
+
 
 
   
