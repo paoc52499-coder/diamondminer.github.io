@@ -1,4 +1,56 @@
-<section class="h-screen flex flex-col justify-center items-center bg-gradient-to-b from-black via-gray-900 to-black text-white">
-  <h1 class="text-5xl font-extrabold text-cyan-400 mb-4 animate-pulse">🛠️ Marketplace</h1>
-  <p class="text-gray-300 text-xl">Drilling soon...</p>
-</section>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DiamondMiner Marketplace</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: radial-gradient(circle at top, #0a0a0a 0%, #000000 100%);
+      color: white;
+      font-family: 'Poppins', sans-serif;
+      overflow: hidden;
+    }
+    .glow-text {
+      text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 40px #00ffff;
+      animation: glowPulse 2s ease-in-out infinite alternate;
+    }
+    @keyframes glowPulse {
+      from { text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff; }
+      to { text-shadow: 0 0 25px #00ffff, 0 0 50px #00ffff; }
+    }
+    .diamond-bg {
+      background: radial-gradient(circle at center, rgba(0,255,255,0.05) 0%, rgba(0,0,0,0.9) 70%);
+    }
+  </style>
+</head>
+<body class="h-screen flex flex-col justify-center items-center diamond-bg">
+
+  <nav class="absolute top-0 w-full bg-black bg-opacity-60 border-b border-cyan-500 text-white py-4">
+    <div class="max-w-6xl mx-auto flex justify-between items-center px-6">
+      <div class="flex items-center space-x-2">
+        <img src="images/diamond-icon.png" alt="Diamond Icon" class="w-8 h-8">
+        <span class="text-cyan-400 font-bold text-xl">DiamondMiner</span>
+      </div>
+      <ul class="flex space-x-8">
+        <li><a href="index.html" class="hover:text-cyan-400 transition">Home</a></li>
+        <li><a href="dashboard.html" class="hover:text-cyan-400 transition">Dashboard</a></li>
+        <li><a href="marketplace.html" class="text-cyan-400 font-semibold">Marketplace</a></li>
+        <li><a href="tokenomics.html" class="hover:text-cyan-400 transition">Tokenomics</a></li>
+        <li><a href="whitepaper.html" class="hover:text-cyan-400 transition">Whitepaper</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="flex flex-col items-center justify-center text-center">
+    <h1 class="text-6xl md:text-8xl font-extrabold text-cyan-400 glow-text mb-4">
+      💎 DRILLING SOON!
+    </h1>
+    <p class="text-gray-400 text-lg md:text-2xl mt-2">
+      The DiamondMiner Marketplace is under excavation. Prepare your rigs!
+    </p>
+  </main>
+
+</body>
+</html>
