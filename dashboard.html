@@ -1,29 +1,29 @@
 <!-- Wallet Modal -->
-<div id="walletModal" class="fixed inset-0 flex items-center justify-center bg-black/70 hidden z-50">
-  <div class="bg-gray-900 p-8 rounded-2xl text-center shadow-2xl border border-cyan-400/40 w-[90%] max-w-sm">
-    <h2 class="text-2xl font-bold text-cyan-400 mb-4">Connect Your Wallet</h2>
+<div id="walletModal"
+  class="fixed inset-0 flex items-center justify-center bg-black/70 backdrop-blur-sm hidden z-50">
+
+  <div class="bg-gradient-to-b from-[#0b0f19] to-[#111827] border border-cyan-500/30 shadow-[0_0_25px_rgba(0,255,255,0.3)] rounded-2xl p-8 w-[90%] max-w-sm text-center animate-fade-in">
+    <h2 class="text-3xl font-bold text-cyan-400 mb-3 tracking-wide">CONNECT YOUR WALLET</h2>
     <p class="text-gray-300 mb-6 text-sm">
-      Please connect your Solana wallet to access mining and rewards.
+      Link your Solana wallet to access the DiamondMiner dashboard and start earning $DIA rewards.
     </p>
 
-    <button
-      id="connectWalletBtn"
-      class="w-full py-3 bg-gradient-to-r from-cyan-400 to-blue-500 text-black font-bold rounded-lg shadow-md hover:scale-105 transition-transform duration-300"
-    >
+    <button id="connectWalletBtn"
+      class="w-full py-3 bg-gradient-to-r from-cyan-400 to-blue-500 text-black font-bold rounded-lg shadow-lg hover:scale-105 hover:shadow-cyan-500/50 transition-all duration-300">
       Connect Wallet
     </button>
 
-    <button
-      onclick="closeWalletModal()"
-      class="mt-4 text-gray-400 hover:text-cyan-300 text-sm"
-    >
+    <button onclick="closeWalletModal()"
+      class="mt-4 text-gray-400 hover:text-cyan-300 text-sm underline">
       Cancel
     </button>
   </div>
 </div>
 
 <!-- Wallet Script -->
+<script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
 <script>
+  // Modal Controls
   function openWalletModal() {
     document.getElementById("walletModal").classList.remove("hidden");
   }
@@ -32,13 +32,17 @@
     document.getElementById("walletModal").classList.add("hidden");
   }
 
+  // Connect Phantom Wallet
   async function connectWallet() {
     if (window.solana && window.solana.isPhantom) {
       try {
         const response = await window.solana.connect();
         const walletAddress = response.publicKey.toString();
         localStorage.setItem("walletAddress", walletAddress);
-        alert("✅ Wallet Connected: " + walletAddress);
+
+        // Show success popup or toast
+        alert("✅ Connected: " + walletAddress.slice(0, 4) + "..." + walletAddress.slice(-4));
+
         closeWalletModal();
       } catch (err) {
         console.error("Wallet connection cancelled:", err);
@@ -50,3 +54,12 @@
 
   document.getElementById("connectWalletBtn").addEventListener("click", connectWallet);
 </script>
+
+<!-- Fade-in animation -->
+<style>
+  @keyframes fade-in {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-fade-in { animation: fade-in 0.4s ease-out; }
+</style>
