@@ -3,54 +3,78 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DiamondMiner Marketplace</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <title>DiamondMiner | Marketplace</title>
+  <link rel="stylesheet" href="styles.css" />
   <style>
     body {
-      background: radial-gradient(circle at top, #0a0a0a 0%, #000000 100%);
-      color: white;
+      margin: 0;
       font-family: 'Poppins', sans-serif;
-      overflow: hidden;
+      background: radial-gradient(circle at top, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      overflow-x: hidden;
     }
-    .glow-text {
-      text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 40px #00ffff;
-      animation: glowPulse 2s ease-in-out infinite alternate;
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 50px;
+      background: rgba(0, 0, 0, 0.5);
+      border-bottom: 1px solid rgba(0, 255, 255, 0.3);
     }
-    @keyframes glowPulse {
-      from { text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff; }
-      to { text-shadow: 0 0 25px #00ffff, 0 0 50px #00ffff; }
+    nav a {
+      color: #00ffff;
+      text-decoration: none;
+      margin: 0 20px;
+      font-weight: 500;
+      transition: 0.3s;
     }
-    .diamond-bg {
-      background: radial-gradient(circle at center, rgba(0,255,255,0.05) 0%, rgba(0,0,0,0.9) 70%);
+    nav a:hover {
+      color: #fff;
+      text-shadow: 0 0 10px #00ffff;
+    }
+    .content {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+    .title {
+      font-size: 5rem;
+      font-weight: 800;
+      letter-spacing: 4px;
+      color: #00ffff;
+      text-shadow: 0 0 30px #00ffff;
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+    @keyframes glow {
+      from { text-shadow: 0 0 20px #00ffff; }
+      to { text-shadow: 0 0 40px #00ffff, 0 0 80px #00ffff; }
+    }
+    .subtitle {
+      font-size: 1.5rem;
+      color: #ccc;
+      margin-top: 20px;
+      letter-spacing: 2px;
     }
   </style>
 </head>
-<body class="h-screen flex flex-col justify-center items-center diamond-bg">
-
-  <nav class="absolute top-0 w-full bg-black bg-opacity-60 border-b border-cyan-500 text-white py-4">
-    <div class="max-w-6xl mx-auto flex justify-between items-center px-6">
-      <div class="flex items-center space-x-2">
-        <img src="images/diamond-icon.png" alt="Diamond Icon" class="w-8 h-8">
-        <span class="text-cyan-400 font-bold text-xl">DiamondMiner</span>
-      </div>
-      <ul class="flex space-x-8">
-        <li><a href="index.html" class="hover:text-cyan-400 transition">Home</a></li>
-        <li><a href="dashboard.html" class="hover:text-cyan-400 transition">Dashboard</a></li>
-        <li><a href="marketplace.html" class="text-cyan-400 font-semibold">Marketplace</a></li>
-        <li><a href="tokenomics.html" class="hover:text-cyan-400 transition">Tokenomics</a></li>
-        <li><a href="whitepaper.html" class="hover:text-cyan-400 transition">Whitepaper</a></li>
-      </ul>
+<body>
+  <nav>
+    <div class="logo">💎 DiamondMiner</div>
+    <div class="links">
+      <a href="index.html">Home</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="tokenomics.html">Tokenomics</a>
+      <a href="marketplace.html">Marketplace</a>
+      <a href="whitepaper.html">Whitepaper</a>
     </div>
   </nav>
 
-  <main class="flex flex-col items-center justify-center text-center">
-    <h1 class="text-6xl md:text-8xl font-extrabold text-cyan-400 glow-text mb-4">
-      💎 DRILLING SOON!
-    </h1>
-    <p class="text-gray-400 text-lg md:text-2xl mt-2">
-      The DiamondMiner Marketplace is under excavation. Prepare your rigs!
-    </p>
-  </main>
-
+  <div class="content">
+    <h1 class="title">DRILLING SOON!</h1>
+    <p class="subtitle">Marketplace is under construction — gear up miners!</p>
+  </div>
 </body>
 </html>
