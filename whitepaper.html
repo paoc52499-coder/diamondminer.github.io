@@ -20,7 +20,6 @@
       border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     }
 
-    /* Container styling */
     .container {
       max-width: 1000px;
       margin: 100px auto;
@@ -50,10 +49,10 @@
       content: "💠 ";
     }
 
-    /* ROADMAP SECTION */
+    /* ROADMAP */
     .roadmap {
       position: relative;
-      margin: 100px auto;
+      margin: 120px auto;
       max-width: 900px;
       padding: 60px 20px;
     }
@@ -61,16 +60,34 @@
     .rail {
       position: absolute;
       left: 50%;
-      top: 0;
+      top: 7%; /* starts aligned with Q4 cave */
       transform: translateX(-50%);
       width: 8px;
-      height: 100%;
+      height: 93%;
       background: linear-gradient(to bottom, #3d2f23, #6b5b4c);
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
       border-radius: 5px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      overflow: hidden;
     }
 
+    /* Moving glow along the rail */
+    .rail::after {
+      content: "";
+      position: absolute;
+      top: -100%;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom, rgba(0,255,255,0.3) 0%, rgba(0,255,255,0) 60%);
+      animation: glowDown 4s linear infinite;
+    }
+
+    @keyframes glowDown {
+      0% { top: -100%; }
+      100% { top: 100%; }
+    }
+
+    /* Static mining lights */
     .mining-light {
       position: absolute;
       left: 50%;
@@ -98,6 +115,7 @@
       box-shadow: 0 0 30px rgba(0, 255, 255, 0.1);
       margin-bottom: 100px;
       transition: transform 0.3s ease;
+      animation: fadeInSlide 1.2s ease both;
     }
 
     .cave:hover {
@@ -118,34 +136,8 @@
       line-height: 1.6;
     }
 
-    .left {
-      left: 0;
-    }
-
-    .right {
-      left: 55%;
-    }
-
-    .roadmap::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 50%;
-      width: 8px;
-      height: 100%;
-      background: linear-gradient(to bottom, #3d2f23, #6b5b4c);
-      transform: translateX(-50%);
-      z-index: 0;
-    }
-
-    @keyframes fadeInSlide {
-      0% { opacity: 0; transform: translateY(30px); }
-      100% { opacity: 1; transform: translateY(0); }
-    }
-
-    .cave {
-      animation: fadeInSlide 1.2s ease both;
-    }
+    .left { left: 0; }
+    .right { left: 55%; }
 
     .left::after, .right::after {
       content: "";
@@ -157,12 +149,12 @@
       border-radius: 2px;
     }
 
-    .left::after {
-      right: -20px;
-    }
+    .left::after { right: -20px; }
+    .right::after { left: -20px; }
 
-    .right::after {
-      left: -20px;
+    @keyframes fadeInSlide {
+      0% { opacity: 0; transform: translateY(30px); }
+      100% { opacity: 1; transform: translateY(0); }
     }
 
     footer {
@@ -219,36 +211,37 @@
     <p>DiamondMiner is building a decentralized economy of miners, powered by diamonds and driven by community innovation.</p>
   </div>
 
-  <!-- ROADMAP (SEPARATE SECTION) -->
+  <!-- ROADMAP -->
   <section class="roadmap">
     <h2 class="text-center text-3xl text-cyan-400 mb-16">🛤️ DiamondMiner Roadmap</h2>
+
     <div class="rail"></div>
 
-    <!-- Mining Lights -->
-    <div class="mining-light" style="top: 15%;"></div>
-    <div class="mining-light" style="top: 40%;"></div>
-    <div class="mining-light" style="top: 65%;"></div>
-    <div class="mining-light" style="top: 90%;"></div>
+    <!-- Static mining lights -->
+    <div class="mining-light" style="top: 18%;"></div>
+    <div class="mining-light" style="top: 43%;"></div>
+    <div class="mining-light" style="top: 68%;"></div>
+    <div class="mining-light" style="top: 92%;"></div>
 
-    <!-- Cave Nodes -->
+    <!-- Cave checkpoints -->
     <div class="cave left" style="top: 0%;">
       <h3>Q4 2025 — Platform Launch ⛏️</h3>
-      <p>Begin the excavation — DiamondMiner’s core platform and $DIA token system go live. Early adopters start mining on the main network with integrated wallet connection and ROI model.</p>
+      <p>Kickstart of DiamondMiner’s ecosystem. Main platform launch, wallet integration, and live $DIA token mining mechanics activated with smooth ROI tracking.</p>
     </div>
 
     <div class="cave right" style="top: 25%;">
       <h3>Q1 2026 — Marketplace & NFT Tools 💎</h3>
-      <p>Introducing the marketplace for trading mining NFTs, boosters, and upgrades. Integration of wallet-linked assets, with enhanced UI and secure Solana-based transactions.</p>
+      <p>Unveiling the NFT-powered Marketplace. Trade mining boosters, upgrade tools, and rare assets through seamless Solana-based smart contracts.</p>
     </div>
 
     <div class="cave left" style="top: 50%;">
       <h3>Q2 2026 — Staking & Governance ⚙️</h3>
-      <p>Launch staking pools where miners lock their $DIA for additional yield and voting power. Governance features empower the community to decide future ecosystem updates.</p>
+      <p>Community staking opens with passive rewards and DAO-style governance. $DIA holders gain voting rights to shape future game features and reward pools.</p>
     </div>
 
     <div class="cave right" style="top: 75%;">
       <h3>Q3 2026 — Mobile & Game Expansion 📱</h3>
-      <p>DiamondMiner evolves into mobile platforms and expanded gaming worlds — bringing mining to your fingertips with play-to-earn experiences and in-game NFT mining quests.</p>
+      <p>Bringing the mine to your pocket — mobile integration and expanded gameplay with immersive mining quests and real-time cooperative exploration.</p>
     </div>
   </section>
 
