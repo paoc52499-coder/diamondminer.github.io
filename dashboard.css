@@ -1,0 +1,29 @@
+.hidden { display: none; }
+
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.modal-content {
+  background: #0a0a0a;
+  border: 1px solid #1e90ff;
+  border-radius: 12px;
+  padding: 30px;
+  color: white;
+  text-align: center;
+}
+
+button {
+  background: linear-gradient(90deg, #00bfff, #1e90ff);
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  margin: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
