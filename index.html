@@ -6,12 +6,14 @@
   <title>DiamondMiner | Home</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link rel="icon" type="image/png" href="images/diamond-icon.png" />
+  <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
   <style>
     body {
       background: radial-gradient(circle at top, #0a0a0f 0%, #000 100%);
       overflow-x: hidden;
+      opacity: 0;
+      animation: fadeIn 0.8s ease-in-out forwards;
     }
-    /* Sparkle canvas */
     #sparkles {
       position: fixed;
       top: 0;
@@ -21,7 +23,6 @@
       z-index: 0;
       pointer-events: none;
     }
-    /* Floating animation for hero diamond */
     .float {
       animation: float 6s ease-in-out infinite;
     }
@@ -29,6 +30,9 @@
       0%, 100% { transform: translateY(0px); }
       50% { transform: translateY(-15px); }
     }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
+    .fade-out { animation: fadeOut 0.8s ease-in-out forwards; }
   </style>
 </head>
 <body class="text-white font-sans relative">
@@ -59,7 +63,9 @@
       Built on <span class="text-blue-300 font-semibold">Solana</span>, DiamondMiner lets you mine digital diamonds, earn rewards, and shape the future of decentralized gaming.
     </p>
     <div class="flex space-x-4">
-      <a href="dashboard.html" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-6 py-3 rounded-xl transition-all">Start Mining</a>
+      <button id="startMiningBtn" onclick="openWalletModal()" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-6 py-3 rounded-xl transition-all">
+        Start Mining
+      </button>
       <a href="tokenomics.html" class="border border-blue-400 hover:bg-blue-400 hover:text-black text-blue-300 font-semibold px-6 py-3 rounded-xl transition-all">View Tokenomics</a>
     </div>
 
@@ -67,6 +73,30 @@
       <img src="images/diamond-coin.png" alt="$DIA Coin" class="w-72 md:w-96 mx-auto drop-shadow-[0_0_35px_rgba(59,130,246,0.7)]">
     </div>
   </section>
+
+  <!-- Wallet Modal -->
+  <div id="walletModal" class="fixed inset-0 flex items-center justify-center bg-black/70 hidden z-50">
+    <div class="bg-gray-900 p-8 rounded-2xl text-center shadow-2xl border border-blue-400/40 w-[90%] max-w-sm">
+      <h2 class="text-2xl font-bold text-blue-400 mb-4">Connect Your Wallet</h2>
+      <p class="text-gray-300 mb-6 text-sm">
+        Please connect your Solana wallet to start mining $DIA tokens.
+      </p>
+
+      <button
+        id="connectWalletBtn"
+        class="w-full py-3 bg-gradient-to-r from-blue-400 to-cyan-500 text-black font-bold rounded-lg shadow-md hover:scale-105 transition-transform duration-300"
+      >
+        Connect Wallet
+      </button>
+
+      <button
+        onclick="closeWalletModal()"
+        class="mt-4 text-gray-400 hover:text-blue-300 text-sm"
+      >
+        Cancel
+      </button>
+    </div>
+  </div>
 
   <!-- About Section -->
   <section class="py-24 px-6 md:px-20 bg-gradient-to-b from-black via-gray-900 to-gray-950 text-center relative z-10">
@@ -99,35 +129,21 @@
     <a href="dashboard.html" class="bg-blue-500 hover:bg-blue-600 px-8 py-4 text-lg font-semibold rounded-xl transition-all">Get Started</a>
   </section>
 
-  <!-- Footer -->
   <footer class="text-center py-6 text-gray-500 text-sm border-t border-gray-800 relative z-10">
     © 2025 DiamondMiner — All Rights Reserved.
   </footer>
 
-  <!-- Sparkle Animation Script -->
+  <!-- Sparkle Animation -->
   <script>
     const canvas = document.getElementById('sparkles');
     const ctx = canvas.getContext('2d');
     let sparkles = [];
-
-    function resize() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-
+    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
     window.addEventListener('resize', resize);
     resize();
-
     function createSparkle() {
-      return {
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        size: Math.random() * 2 + 1,
-        speedY: Math.random() * 0.3 + 0.1,
-        opacity: Math.random() * 0.7 + 0.3
-      };
+      return { x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: Math.random() * 2 + 1, speedY: Math.random() * 0.3 + 0.1, opacity: Math.random() * 0.7 + 0.3 };
     }
-
     function drawSparkles() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.fillStyle = 'rgba(59, 130, 246, 0.8)';
@@ -138,16 +154,57 @@
         ctx.fill();
         ctx.closePath();
         s.y += s.speedY;
-        if (s.y > canvas.height) {
-          s.y = 0;
-          s.x = Math.random() * canvas.width;
-        }
+        if (s.y > canvas.height) { s.y = 0; s.x = Math.random() * canvas.width; }
       });
       requestAnimationFrame(drawSparkles);
     }
-
     for (let i = 0; i < 120; i++) sparkles.push(createSparkle());
     drawSparkles();
+  </script>
+
+  <!-- Wallet Modal Logic -->
+  <script>
+    function openWalletModal() {
+      document.getElementById("walletModal").classList.remove("hidden");
+    }
+    function closeWalletModal() {
+      document.getElementById("walletModal").classList.add("hidden");
+    }
+
+    async function connectWallet() {
+      if (window.solana && window.solana.isPhantom) {
+        try {
+          const response = await window.solana.connect();
+          const walletAddress = response.publicKey.toString();
+          localStorage.setItem("walletAddress", walletAddress);
+          closeWalletModal();
+          document.body.classList.add("fade-out");
+          setTimeout(() => window.location.href = "dashboard.html", 800);
+        } catch (err) {
+          console.error("Wallet connection cancelled:", err);
+        }
+      } else {
+        alert("⚠️ Phantom wallet not found. Please install it from https://phantom.app/");
+      }
+    }
+
+    document.getElementById("connectWalletBtn").addEventListener("click", connectWallet);
+
+    const startBtn = document.getElementById("startMiningBtn");
+    const savedWallet = localStorage.getItem("walletAddress");
+
+    function updateButton() {
+      if (savedWallet) {
+        startBtn.textContent = "Go to Dashboard";
+        startBtn.classList.remove("bg-blue-500");
+        startBtn.classList.add("bg-green-500", "hover:bg-green-600");
+        startBtn.onclick = () => {
+          document.body.classList.add("fade-out");
+          setTimeout(() => window.location.href = "dashboard.html", 800);
+        };
+      }
+    }
+    updateButton();
   </script>
 
 </body>
