@@ -3,111 +3,197 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DiamondMiner Dashboard – $DIA</title>
+  <title>DiamondMiner – Dashboard</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
-</head>
-<body class="bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 text-white min-h-screen">
 
-  <!-- NAVBAR (Unified Design) -->
+  <style>
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-15px); }
+    }
+    .animate-float {
+      animation: float 4s ease-in-out infinite;
+    }
+
+    /* Sparkle animation */
+    .sparkle {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: radial-gradient(circle, rgba(0,255,255,1) 0%, rgba(0,255,255,0) 70%);
+      border-radius: 50%;
+      opacity: 0;
+      animation: sparkle 2s infinite ease-in-out;
+      pointer-events: none;
+      display: none;
+    }
+    @keyframes sparkle {
+      0%, 100% { transform: scale(0.5); opacity: 0; }
+      50% { transform: scale(1.5); opacity: 1; }
+    }
+    .sparkle1 { top: 30%; left: 40%; animation-delay: 0s; }
+    .sparkle2 { top: 50%; left: 60%; animation-delay: 0.6s; }
+    .sparkle3 { top: 60%; left: 35%; animation-delay: 1.2s; }
+    .sparkle4 { top: 40%; left: 55%; animation-delay: 1.8s; }
+  </style>
+</head>
+
+<body class="bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 text-white min-h-screen">
+  <!-- NAVBAR -->
   <header class="fixed top-0 left-0 w-full bg-[#05060d]/90 backdrop-blur-sm z-50 border-b border-white/5">
     <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
-      <!-- Logo -->
       <a href="index.html" class="flex items-center gap-3">
         <img src="images/diamond-icon.png" alt="DiamondMiner" class="w-8 h-8 animate-pulse" />
         <span class="text-xl font-bold text-cyan-400">DiamondMiner</span>
       </a>
 
-      <!-- Navigation Links -->
       <nav class="flex gap-8 text-sm font-medium">
         <a href="index.html" class="text-gray-300 hover:text-cyan-400 transition">Home</a>
-        <a href="dashboard.html" class="text-cyan-400 font-semibold">Dashboard</a>
+        <a href="dashboard.html" class="text-gray-300 hover:text-cyan-400 transition">Dashboard</a>
         <a href="marketplace.html" class="text-gray-300 hover:text-cyan-400 transition">Marketplace</a>
         <a href="tokenomics.html" class="text-gray-300 hover:text-cyan-400 transition">Tokenomics</a>
         <a href="whitepaper.html" class="text-gray-300 hover:text-cyan-400 transition">Whitepaper</a>
       </nav>
     </div>
   </header>
-
-  <!-- Top padding -->
   <div class="pt-20"></div>
 
-  <!-- Wallet Modal -->
+  <!-- MAIN DASHBOARD -->
+  <main class="max-w-7xl mx-auto px-6 mt-12 grid md:grid-cols-2 gap-10 items-center">
+    <!-- Floating Island -->
+    <div class="relative flex justify-center">
+      <div class="relative">
+        <img src="images/floating-island.png" alt="Mining Island"
+          class="w-full max-w-3xl mx-auto drop-shadow-[0_0_40px_rgba(34,211,238,0.3)] animate-float" />
+
+        <div class="absolute -bottom-8 left-1/2 -translate-x-1/2 w-[60%] h-24 bg-cyan-400/30 blur-3xl rounded-full"></div>
+
+        <div id="miningStatus"
+          class="absolute bottom-8 left-1/2 -translate-x-1/2 text-cyan-300 text-sm font-semibold bg-black/60 px-4 py-2 rounded-full shadow-lg hidden">
+          ⛏️ Mining in progress...
+        </div>
+
+        <div class="sparkle sparkle1"></div>
+        <div class="sparkle sparkle2"></div>
+        <div class="sparkle sparkle3"></div>
+        <div class="sparkle sparkle4"></div>
+      </div>
+    </div>
+
+    <!-- Mining Control Panel -->
+    <div class="bg-slate-800/60 rounded-2xl p-8 shadow-2xl border border-white/10 backdrop-blur-sm">
+      <h2 class="text-2xl font-bold text-cyan-400 mb-6 text-center">Mining Control Panel</h2>
+
+      <button id="startMiningBtn"
+        class="w-full py-3 bg-gradient-to-r from-cyan-400 to-blue-500 text-black font-bold rounded-lg shadow-md hover:scale-105 transition-transform duration-300">
+        Start Mining
+      </button>
+
+      <div class="mt-6 space-y-4">
+        <div>
+          <p class="text-sm text-gray-400">CURRENT MINING RATE</p>
+          <p id="miningRate" class="text-2xl font-bold text-cyan-300">0.00 $DIA / min</p>
+        </div>
+        <div>
+          <p class="text-sm text-gray-400">MINING BALANCE</p>
+          <p id="miningBalance" class="text-2xl font-bold text-cyan-300">0.00 $DIA</p>
+        </div>
+      </div>
+
+      <button id="claimBtn"
+        class="mt-8 w-full py-3 bg-gradient-to-r from-green-400 to-emerald-500 text-black font-bold rounded-lg shadow-md hover:scale-105 transition-transform duration-300">
+        Claim Rewards
+      </button>
+    </div>
+  </main>
+
+  <!-- WALLET MODAL -->
   <div id="walletModal" class="fixed inset-0 flex items-center justify-center bg-black/70 hidden z-50">
     <div class="bg-gray-900 p-8 rounded-2xl text-center shadow-2xl border border-cyan-400/40 w-[90%] max-w-sm">
       <h2 class="text-2xl font-bold text-cyan-400 mb-4">Connect Your Wallet</h2>
       <p class="text-gray-300 mb-6 text-sm">
-        Please connect your Solana wallet to access your mining dashboard.
+        Please connect your Solana wallet to start mining $DIA tokens.
       </p>
-
-      <button id="connectWalletBtn" class="w-full py-3 bg-gradient-to-r from-cyan-400 to-blue-500 text-black font-bold rounded-lg shadow-md hover:scale-105 transition-transform duration-300">
+      <button id="connectWalletBtn"
+        class="w-full py-3 bg-gradient-to-r from-cyan-400 to-blue-500 text-black font-bold rounded-lg shadow-md hover:scale-105 transition-transform duration-300">
         Connect Wallet
       </button>
-
       <button onclick="closeWalletModal()" class="mt-4 text-gray-400 hover:text-cyan-300 text-sm">
         Cancel
       </button>
     </div>
   </div>
 
-  <!-- Floating Island Mining Display -->
-<div class="relative w-full md:w-2/3 flex justify-center mt-10">
-  <div class="relative">
-
-    <!-- Floating Island Image -->
-    <img 
-      src="images/floating-island.png" 
-      alt="Mining Island" 
-      class="w-full max-w-3xl mx-auto drop-shadow-[0_0_40px_rgba(34,211,238,0.3)] animate-float"
-    />
-
-    <!-- Cyan glow beneath island -->
-    <div class="absolute -bottom-8 left-1/2 -translate-x-1/2 w-[60%] h-24 bg-cyan-400/30 blur-3xl rounded-full"></div>
-
-    <!-- Mining Status -->
-    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 text-cyan-300 text-sm font-semibold bg-black/60 px-4 py-2 rounded-full shadow-lg flex items-center gap-2">
-      ⛏️ Mining in progress...
-    </div>
-
-    <!-- Sparkle effects -->
-    <div class="sparkle sparkle1"></div>
-    <div class="sparkle sparkle2"></div>
-    <div class="sparkle sparkle3"></div>
-    <div class="sparkle sparkle4"></div>
-  </div>
-</div>
-
-
-<script>
-  let mining = false;
-  let balance = 0;
-  let rate = 0.5; // Example: $DIA per minute
-  let miningInterval;
-
-  document.getElementById("startMiningBtn").addEventListener("click", function() {
-    if (!mining) {
-      mining = true;
-      this.innerText = "⛏️ Mining...";
-      document.querySelector("#miningRate").innerText = rate.toFixed(2) + " $DIA / min";
-
-      miningInterval = setInterval(() => {
-        balance += rate / 60; // increment every second
-        document.querySelector("#miningBalance").innerText = balance.toFixed(4) + " $DIA";
-      }, 1000);
+  <!-- JS LOGIC -->
+  <script>
+    function openWalletModal() {
+      document.getElementById("walletModal").classList.remove("hidden");
     }
-  });
-
-  document.getElementById("claimBtn").addEventListener("click", function() {
-    if (balance > 0) {
-      alert("You claimed " + balance.toFixed(2) + " $DIA!");
-      balance = 0;
-      document.querySelector("#miningBalance").innerText = "0.00 $DIA";
+    function closeWalletModal() {
+      document.getElementById("walletModal").classList.add("hidden");
     }
-  });
-</script>
 
+    async function connectWallet() {
+      if (window.solana && window.solana.isPhantom) {
+        try {
+          const response = await window.solana.connect();
+          const walletAddress = response.publicKey.toString();
+          localStorage.setItem("walletAddress", walletAddress);
+          closeWalletModal();
+          alert("✅ Wallet connected: " + walletAddress);
+        } catch (err) {
+          console.error("Wallet connection cancelled:", err);
+        }
+      } else {
+        alert("⚠️ Phantom wallet not found. Please install it from https://phantom.app/");
+      }
+    }
+    document.getElementById("connectWalletBtn").addEventListener("click", connectWallet);
 
-  <footer class="text-center py-6 text-xs text-slate-500 mt-12">
+    const startBtn = document.getElementById("startMiningBtn");
+    const miningStatus = document.getElementById("miningStatus");
+    const miningRateEl = document.getElementById("miningRate");
+    const miningBalanceEl = document.getElementById("miningBalance");
+    let mining = false;
+    let balance = 0;
+    let rate = 0.05; // starting rate
+
+    startBtn.addEventListener("click", () => {
+      const wallet = localStorage.getItem("walletAddress");
+      if (!wallet) return openWalletModal();
+
+      mining = !mining;
+      if (mining) {
+        startBtn.innerText = "Stop Mining";
+        miningStatus.classList.remove("hidden");
+        document.querySelectorAll(".sparkle").forEach(s => s.style.display = "block");
+
+        miningInterval = setInterval(() => {
+          balance += rate / 60;
+          miningBalanceEl.innerText = balance.toFixed(2) + " $DIA";
+          miningRateEl.innerText = rate.toFixed(2) + " $DIA / min";
+        }, 1000);
+      } else {
+        startBtn.innerText = "Start Mining";
+        miningStatus.classList.add("hidden");
+        document.querySelectorAll(".sparkle").forEach(s => s.style.display = "none");
+        clearInterval(miningInterval);
+      }
+    });
+
+    document.getElementById("claimBtn").addEventListener("click", () => {
+      if (balance > 0) {
+        alert("💎 You claimed " + balance.toFixed(2) + " $DIA!");
+        balance = 0;
+        miningBalanceEl.innerText = "0.00 $DIA";
+      } else {
+        alert("⚠️ No rewards to claim yet!");
+      }
+    });
+  </script>
+
+  <footer class="text-center py-6 text-xs text-slate-500 mt-10">
     © 2025 DiamondMiner — All Rights Reserved.
   </footer>
 </body>
