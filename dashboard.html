@@ -1,113 +1,172 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DiamondMiner – $DIA</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DiamondMiner Dashboard – $DIA</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
 </head>
 <body class="bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 text-white min-h-screen">
 
- <!-- NAVBAR (Unified Design) -->
-<header class="fixed top-0 left-0 w-full bg-[#05060d]/90 backdrop-blur-sm z-50 border-b border-white/5">
-  <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
-    <!-- Logo -->
-    <a href="index.html" class="flex items-center gap-3">
-      <img src="images/diamond-icon.png" alt="DiamondMiner" class="w-8 h-8 animate-pulse">
-      <span class="text-xl font-bold text-cyan-400">DiamondMiner</span>
-    </a>
+  <!-- NAVBAR (Unified Design) -->
+  <header class="fixed top-0 left-0 w-full bg-[#05060d]/90 backdrop-blur-sm z-50 border-b border-white/5">
+    <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
+      <!-- Logo -->
+      <a href="index.html" class="flex items-center gap-3">
+        <img src="images/diamond-icon.png" alt="DiamondMiner" class="w-8 h-8 animate-pulse" />
+        <span class="text-xl font-bold text-cyan-400">DiamondMiner</span>
+      </a>
 
-    <!-- Navigation Links -->
-    <nav class="flex gap-8 text-sm font-medium">
-      <a href="index.html" class="text-gray-300 hover:text-cyan-400 transition-colors duration-200">Home</a>
-      <a href="dashboard.html" class="text-gray-300 hover:text-cyan-400 transition-colors duration-200">Dashboard</a>
-      <a href="marketplace.html" class="text-gray-300 hover:text-cyan-400 transition-colors duration-200">Marketplace</a>
-      <a href="tokenomics.html" class="text-gray-300 hover:text-cyan-400 transition-colors duration-200">Tokenomics</a>
-      <a href="whitepaper.html" class="text-gray-300 hover:text-cyan-400 transition-colors duration-200">Whitepaper</a>
-    </nav>
-  </div>
-</header>
+      <!-- Navigation Links -->
+      <nav class="flex gap-8 text-sm font-medium">
+        <a href="index.html" class="text-gray-300 hover:text-cyan-400 transition">Home</a>
+        <a href="dashboard.html" class="text-cyan-400 font-semibold">Dashboard</a>
+        <a href="marketplace.html" class="text-gray-300 hover:text-cyan-400 transition">Marketplace</a>
+        <a href="tokenomics.html" class="text-gray-300 hover:text-cyan-400 transition">Tokenomics</a>
+        <a href="whitepaper.html" class="text-gray-300 hover:text-cyan-400 transition">Whitepaper</a>
+      </nav>
+    </div>
+  </header>
 
-<!-- Add top padding so content doesn’t hide behind navbar -->
-<div class="pt-20"></div>
-
-
-  <!-- Hero Section -->
-  <section class="text-center mt-20">
-    <h2 class="text-4xl md:text-5xl font-bold mb-4">Start Mining the Future of $DIA</h2>
-    <p class="text-slate-300 mb-8 max-w-xl mx-auto">
-      Join the revolution. Mine digital diamonds and earn rewards in the Solana-powered DiamondMiner ecosystem.
-    </p>
-    <button onclick="openWalletModal()" class="px-10 py-4 bg-gradient-to-r from-cyan-400 to-blue-500 text-black font-bold rounded-full shadow-lg hover:scale-105 transition">
-      Start Mining
-    </button>
-
-    <p id="walletDisplay" class="text-cyan-300 mt-6"></p>
-  </section>
+  <!-- Top padding -->
+  <div class="pt-20"></div>
 
   <!-- Wallet Modal -->
   <div id="walletModal" class="fixed inset-0 flex items-center justify-center bg-black/70 hidden z-50">
     <div class="bg-gray-900 p-8 rounded-2xl text-center shadow-2xl border border-cyan-400/40 w-[90%] max-w-sm">
       <h2 class="text-2xl font-bold text-cyan-400 mb-4">Connect Your Wallet</h2>
       <p class="text-gray-300 mb-6 text-sm">
-        Please connect your Solana wallet to start mining $DIA tokens.
+        Please connect your Solana wallet to access your mining dashboard.
       </p>
 
-      <button
-        id="connectWalletBtn"
-        class="w-full py-3 bg-gradient-to-r from-cyan-400 to-blue-500 text-black font-bold rounded-lg shadow-md hover:scale-105 transition-transform duration-300"
-      >
+      <button id="connectWalletBtn" class="w-full py-3 bg-gradient-to-r from-cyan-400 to-blue-500 text-black font-bold rounded-lg shadow-md hover:scale-105 transition-transform duration-300">
         Connect Wallet
       </button>
 
-      <button
-        onclick="closeWalletModal()"
-        class="mt-4 text-gray-400 hover:text-cyan-300 text-sm"
-      >
+      <button onclick="closeWalletModal()" class="mt-4 text-gray-400 hover:text-cyan-300 text-sm">
         Cancel
       </button>
     </div>
   </div>
 
-  <!-- Wallet Script -->
+  <!-- Mining Dashboard (hidden by default) -->
+  <section id="miningDashboard" class="hidden text-center mt-20 px-6">
+    <h2 class="text-4xl font-bold mb-4 text-cyan-400">Welcome, Miner!</h2>
+    <p class="text-gray-400 mb-2">Wallet Address: <span id="walletAddress" class="text-cyan-300"></span></p>
+
+    <div class="bg-slate-800/60 border border-cyan-500/30 p-6 rounded-2xl shadow-lg max-w-lg mx-auto mt-8">
+      <p class="text-lg mb-3">Mining Rate: <span id="miningRate" class="text-cyan-300 font-semibold">Loading...</span> $DIA/hr</p>
+      <p class="text-lg mb-3">ROI Timer: <span id="roiTimer" class="text-cyan-300 font-semibold">48:00:00</span></p>
+
+      <div class="mt-6 flex justify-center gap-4">
+        <button id="startMiningBtn" class="px-8 py-3 bg-gradient-to-r from-cyan-400 to-blue-500 text-black font-bold rounded-lg hover:scale-105 transition">Start Mining</button>
+        <button id="claimRewardsBtn" class="px-8 py-3 bg-gray-700 text-gray-400 font-bold rounded-lg cursor-not-allowed" disabled>Claim Rewards</button>
+      </div>
+
+      <div class="w-full bg-slate-700 h-4 rounded-full mt-6 overflow-hidden">
+        <div id="progressFill" class="h-full bg-gradient-to-r from-cyan-400 to-blue-500 w-0 transition-all duration-500"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- JS Section -->
   <script>
+    // Open/Close modal
     function openWalletModal() {
       document.getElementById("walletModal").classList.remove("hidden");
     }
-
     function closeWalletModal() {
       document.getElementById("walletModal").classList.add("hidden");
     }
 
-    async function connectWallet() {
-      if (window.solana && window.solana.isPhantom) {
-        try {
-          const response = await window.solana.connect();
-          const walletAddress = response.publicKey.toString();
-          localStorage.setItem("walletAddress", walletAddress);
-          document.getElementById("walletDisplay").innerText = 
-            "Connected: " + walletAddress.slice(0, 4) + "..." + walletAddress.slice(-4);
-          closeWalletModal();
-        } catch (err) {
-          console.error("Wallet connection cancelled:", err);
-        }
-      } else {
-        alert("⚠️ Phantom wallet not found. Please install it from https://phantom.app/");
-      }
-    }
+    // Wallet connection
+    const connectBtn = document.getElementById("connectWalletBtn");
+    const walletModal = document.getElementById("walletModal");
+    const miningDashboard = document.getElementById("miningDashboard");
+    const walletAddressField = document.getElementById("walletAddress");
 
-    document.getElementById("connectWalletBtn").addEventListener("click", connectWallet);
-
-    // Show connected wallet if already logged in
+    // Check if wallet already connected
     const savedWallet = localStorage.getItem("walletAddress");
     if (savedWallet) {
-      document.getElementById("walletDisplay").innerText = 
-        "Connected: " + savedWallet.slice(0, 4) + "..." + savedWallet.slice(-4);
+      showMiningDashboard(savedWallet);
+    } else {
+      openWalletModal();
+    }
+
+    connectBtn.addEventListener("click", async () => {
+      if (window.solana && window.solana.isPhantom) {
+        try {
+          const resp = await window.solana.connect();
+          const wallet = resp.publicKey.toString();
+          localStorage.setItem("walletAddress", wallet);
+          showMiningDashboard(wallet);
+        } catch (err) {
+          console.error("Wallet connection canceled:", err);
+        }
+      } else {
+        alert("Please install Phantom Wallet to continue.");
+        window.open("https://phantom.app/", "_blank");
+      }
+    });
+
+    function showMiningDashboard(wallet) {
+      walletModal.classList.add("hidden");
+      miningDashboard.classList.remove("hidden");
+      walletAddressField.textContent = wallet.slice(0, 4) + "..." + wallet.slice(-4);
+    }
+
+    // Mining simulation logic
+    document.getElementById("startMiningBtn").addEventListener("click", () => {
+      startMiningSimulation();
+    });
+
+    function startMiningSimulation() {
+      let rate = 5.0;
+      let progress = 0;
+      const progressFill = document.getElementById("progressFill");
+      const claimBtn = document.getElementById("claimRewardsBtn");
+      const timerDisplay = document.getElementById("roiTimer");
+      const miningRateDisplay = document.getElementById("miningRate");
+
+      miningRateDisplay.textContent = rate.toFixed(2);
+
+      const timer = setInterval(() => {
+        progress += 1;
+        progressFill.style.width = progress + "%";
+        if (progress >= 100) {
+          clearInterval(timer);
+          claimBtn.disabled = false;
+          claimBtn.classList.remove("cursor-not-allowed", "bg-gray-700", "text-gray-400");
+          claimBtn.classList.add("bg-gradient-to-r", "from-cyan-400", "to-blue-500", "text-black");
+        }
+      }, 500);
+
+      // ROI countdown (48 hours)
+      let hours = 48, minutes = 0, seconds = 0;
+      const roiCountdown = setInterval(() => {
+        if (hours === 0 && minutes === 0 && seconds === 0) {
+          clearInterval(roiCountdown);
+          return;
+        }
+        if (seconds === 0) {
+          seconds = 59;
+          if (minutes === 0) {
+            minutes = 59;
+            hours--;
+          } else {
+            minutes--;
+          }
+        } else {
+          seconds--;
+        }
+        timerDisplay.textContent = 
+          `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+      }, 1000);
     }
   </script>
 
-  <footer class="text-center py-6 text-xs text-slate-500">
+  <footer class="text-center py-6 text-xs text-slate-500 mt-12">
     © 2025 DiamondMiner — All Rights Reserved.
   </footer>
 </body>
