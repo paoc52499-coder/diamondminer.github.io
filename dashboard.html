@@ -3,183 +3,299 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DiamondMiner | Home</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <link rel="icon" type="image/png" href="images/diamond-icon.png" />
+  <title>DiamondMiner – Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
+
   <style>
-    body {
-      background: radial-gradient(circle at top, #0a0a0f 0%, #000 100%);
-      overflow-x: hidden;
-      opacity: 0;
-      animation: fadeIn 0.8s ease-in-out forwards;
-    }
-    #sparkles {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-      pointer-events: none;
-    }
-    .float {
-      animation: float 6s ease-in-out infinite;
-    }
+    /* fade in/out */
+    .fade-in { animation: fadeIn 0.6s ease-in-out forwards; }
+    .fade-out { animation: fadeOut 0.6s ease-in-out forwards; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
+
     @keyframes float {
       0%, 100% { transform: translateY(0px); }
       50% { transform: translateY(-15px); }
     }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
-    .fade-out { animation: fadeOut 0.8s ease-in-out forwards; }
+    .animate-float { animation: float 4s ease-in-out infinite; }
+
+    /* Sparkles */
+    .sparkle {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: radial-gradient(circle, rgba(0,255,255,1) 0%, rgba(0,255,255,0) 70%);
+      border-radius: 50%;
+      opacity: 0;
+      animation: sparkle 2s infinite ease-in-out;
+      pointer-events: none;
+      display: none;
+      filter: drop-shadow(0 0 6px rgba(0,255,255,0.6));
+    }
+    @keyframes sparkle {
+      0%, 100% { transform: scale(0.6); opacity: 0; }
+      50% { transform: scale(1.3); opacity: 1; }
+    }
+    .sparkle1 { top: 30%; left: 40%; animation-delay: 0s; }
+    .sparkle2 { top: 50%; left: 60%; animation-delay: 0.6s; }
+    .sparkle3 { top: 60%; left: 35%; animation-delay: 1.2s; }
+    .sparkle4 { top: 40%; left: 55%; animation-delay: 1.8s; }
+    .sparkle-active { display: block !important; animation-duration: 1.2s !important; filter: drop-shadow(0 0 18px rgba(0,255,255,0.9)) !important; }
+
+    .island-glow { box-shadow: 0 30px 80px rgba(34,211,238,0.25), 0 0 40px rgba(34,211,238,0.12); transform: translateY(-4px); transition: all 0.25s ease; }
   </style>
 </head>
-<body class="text-white font-sans relative">
 
-  <canvas id="sparkles"></canvas>
+<body class="bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 text-white min-h-screen fade-in">
+  <!-- NAVBAR -->
+  <header class="fixed top-0 left-0 w-full bg-[#05060d]/90 backdrop-blur-sm z-50 border-b border-white/5">
+    <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
+      <a href="index.html" class="flex items-center gap-3">
+        <img src="images/diamond-icon.png" alt="DiamondMiner" class="w-8 h-8 animate-pulse" />
+        <span class="text-xl font-bold text-cyan-400">DiamondMiner</span>
+      </a>
 
-  <!-- Navbar -->
-  <nav class="flex justify-between items-center px-10 py-6 bg-transparent absolute top-0 left-0 right-0 z-50">
-    <div class="flex items-center space-x-2">
-      <img src="images/diamond-icon.png" alt="Diamond Icon" class="w-8 h-8">
-      <h1 class="text-2xl font-bold text-blue-400">DiamondMiner</h1>
+      <nav class="flex gap-8 text-sm font-medium">
+        <a href="index.html" class="text-gray-300 hover:text-cyan-400 transition">Home</a>
+        <a href="dashboard.html" class="text-gray-300 hover:text-cyan-400 transition">Dashboard</a>
+        <a href="marketplace.html" class="text-gray-300 hover:text-cyan-400 transition">Marketplace</a>
+        <a href="tokenomics.html" class="text-gray-300 hover:text-cyan-400 transition">Tokenomics</a>
+        <a href="whitepaper.html" class="text-gray-300 hover:text-cyan-400 transition">Whitepaper</a>
+      </nav>
+
+      <button id="disconnectBtn" class="text-sm text-red-400 hover:text-red-300 px-3 py-1 rounded-md border border-red-400/20 transition">
+        Disconnect
+      </button>
     </div>
-    <ul class="flex space-x-8 text-gray-300">
-      <li><a href="index.html" class="hover:text-blue-400">Home</a></li>
-      <li><a href="dashboard.html" class="hover:text-blue-400">Dashboard</a></li>
-      <li><a href="marketplace.html" class="hover:text-blue-400">Marketplace</a></li>
-      <li><a href="tokenomics.html" class="hover:text-blue-400">Tokenomics</a></li>
-      <li><a href="whitepaper.html" class="hover:text-blue-400">Whitepaper</a></li>
-    </ul>
-  </nav>
+  </header>
+  <div class="pt-20"></div>
 
-  <!-- Hero Section -->
-  <section class="min-h-screen flex flex-col justify-center items-center text-center px-6 pt-32 relative z-10">
-    <h1 class="text-4xl md:text-6xl font-extrabold mb-4">
-      Discover the Power of <span class="text-blue-400">Diamond Mining</span>
-    </h1>
-    <p class="text-lg md:text-xl text-gray-400 max-w-2xl mb-8">
-      Built on <span class="text-blue-300 font-semibold">Solana</span>, DiamondMiner lets you mine digital diamonds, earn rewards, and shape the future of decentralized gaming.
-    </p>
-    <div class="flex space-x-4">
-      <button id="startMiningBtn" onclick="openWalletModal()" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-6 py-3 rounded-xl transition-all">
+  <!-- MAIN DASHBOARD -->
+  <main class="max-w-7xl mx-auto px-6 mt-12 grid md:grid-cols-2 gap-10 items-center">
+    <!-- Island -->
+    <div class="relative flex justify-center">
+      <div id="islandWrap" class="relative">
+        <img id="islandImg" src="images/floating-island.png" alt="Mining Island"
+          class="w-full max-w-3xl mx-auto drop-shadow-[0_0_40px_rgba(34,211,238,0.3)] animate-float" />
+
+        <div class="absolute -bottom-8 left-1/2 -translate-x-1/2 w-[60%] h-24 bg-cyan-400/30 blur-3xl rounded-full"></div>
+        <div id="miningStatus"
+          class="absolute bottom-8 left-1/2 -translate-x-1/2 text-cyan-300 text-sm font-semibold bg-black/60 px-4 py-2 rounded-full shadow-lg hidden">
+          ⛏️ Mining in progress...
+        </div>
+
+        <div class="sparkle sparkle1"></div>
+        <div class="sparkle sparkle2"></div>
+        <div class="sparkle sparkle3"></div>
+        <div class="sparkle sparkle4"></div>
+      </div>
+    </div>
+
+    <!-- Control Panel -->
+    <div class="bg-slate-800/60 rounded-2xl p-8 shadow-2xl border border-white/10 backdrop-blur-sm">
+      <h2 class="text-2xl font-bold text-cyan-400 mb-6 text-center">Mining Control Panel</h2>
+
+      <button id="startMiningBtn"
+        class="w-full py-3 bg-gradient-to-r from-cyan-400 to-blue-500 text-black font-bold rounded-lg shadow-md hover:scale-105 transition-transform duration-300">
         Start Mining
       </button>
-      <a href="tokenomics.html" class="border border-blue-400 hover:bg-blue-400 hover:text-black text-blue-300 font-semibold px-6 py-3 rounded-xl transition-all">View Tokenomics</a>
-    </div>
 
-    <div class="mt-16 float">
-      <img src="images/diamond-coin.png" alt="$DIA Coin" class="w-72 md:w-96 mx-auto drop-shadow-[0_0_35px_rgba(59,130,246,0.7)]">
-    </div>
-  </section>
+      <div class="mt-6 space-y-4">
+        <div>
+          <p class="text-sm text-gray-400">CURRENT MINING RATE</p>
+          <p id="miningRate" class="text-2xl font-bold text-cyan-300">0.00 $DIA / min</p>
+        </div>
+        <div>
+          <p class="text-sm text-gray-400">MINING BALANCE</p>
+          <p id="miningBalance" class="text-2xl font-bold text-cyan-300">0.00 $DIA</p>
+        </div>
+        <div>
+          <p class="text-sm text-gray-400">TOTAL $DIA EARNED</p>
+          <p id="totalDia" class="text-2xl font-bold text-green-400">0.00 $DIA</p>
+        </div>
+      </div>
 
-  <!-- Wallet Modal -->
+      <button id="claimBtn"
+        class="mt-8 w-full py-3 bg-gradient-to-r from-green-400 to-emerald-500 text-black font-bold rounded-lg shadow-md hover:scale-105 transition-transform duration-300">
+        Claim Rewards
+      </button>
+    </div>
+  </main>
+
+  <!-- WALLET MODAL -->
   <div id="walletModal" class="fixed inset-0 flex items-center justify-center bg-black/70 hidden z-50">
-    <div class="bg-gray-900 p-8 rounded-2xl text-center shadow-2xl border border-blue-400/40 w-[90%] max-w-sm">
-      <h2 class="text-2xl font-bold text-blue-400 mb-4">Connect Your Wallet</h2>
-      <p class="text-gray-300 mb-6 text-sm">
-        Please connect your Solana wallet to start mining $DIA tokens.
-      </p>
-
-      <button
-        id="connectWalletBtn"
-        class="w-full py-3 bg-gradient-to-r from-blue-400 to-cyan-500 text-black font-bold rounded-lg shadow-md hover:scale-105 transition-transform duration-300"
-      >
+    <div class="bg-gray-900 p-8 rounded-2xl text-center shadow-2xl border border-cyan-400/40 w-[90%] max-w-sm">
+      <h2 class="text-2xl font-bold text-cyan-400 mb-4">Connect Your Wallet</h2>
+      <p class="text-gray-300 mb-6 text-sm">Please connect your Solana wallet to start mining $DIA tokens.</p>
+      <button id="connectWalletBtn"
+        class="w-full py-3 bg-gradient-to-r from-cyan-400 to-blue-500 text-black font-bold rounded-lg shadow-md hover:scale-105 transition-transform duration-300">
         Connect Wallet
       </button>
-
-      <button
-        onclick="closeWalletModal()"
-        class="mt-4 text-gray-400 hover:text-blue-300 text-sm"
-      >
+      <button onclick="closeWalletModal()" class="mt-4 text-gray-400 hover:text-cyan-300 text-sm">
         Cancel
       </button>
     </div>
   </div>
 
-  <!-- About Section -->
-  <section class="py-24 px-6 md:px-20 bg-gradient-to-b from-black via-gray-900 to-gray-950 text-center relative z-10">
-    <h2 class="text-3xl md:text-4xl font-bold mb-6 text-blue-400">What is $DIA?</h2>
-    <p class="text-gray-300 max-w-3xl mx-auto text-lg">
-      $DIA is the lifeblood of the DiamondMiner ecosystem. It fuels mining operations, powers marketplace transactions, and rewards active players in our play-to-earn adventure.
-    </p>
-  </section>
-
-  <!-- Features -->
-  <section class="py-24 px-6 md:px-16 text-center grid md:grid-cols-3 gap-10 relative z-10">
-    <div class="bg-gray-900/60 backdrop-blur-lg rounded-2xl p-8 shadow-xl hover:shadow-blue-500/40 transition">
-      <h3 class="text-xl font-bold text-blue-400 mb-3">Mine & Earn</h3>
-      <p class="text-gray-400">Start mining digital diamonds and watch your earnings grow with every block.</p>
-    </div>
-    <div class="bg-gray-900/60 backdrop-blur-lg rounded-2xl p-8 shadow-xl hover:shadow-blue-500/40 transition">
-      <h3 class="text-xl font-bold text-blue-400 mb-3">Trade & Collect</h3>
-      <p class="text-gray-400">Buy, sell, and trade rare NFTs and boosters in our secure marketplace.</p>
-    </div>
-    <div class="bg-gray-900/60 backdrop-blur-lg rounded-2xl p-8 shadow-xl hover:shadow-blue-500/40 transition">
-      <h3 class="text-xl font-bold text-blue-400 mb-3">Grow the Ecosystem</h3>
-      <p class="text-gray-400">Stake $DIA tokens to earn passive rewards and shape the DiamondMiner future.</p>
-    </div>
-  </section>
-
-  <!-- Call to Action -->
-  <section class="text-center py-20 bg-gradient-to-r from-blue-900/20 via-blue-700/10 to-black relative z-10">
-    <h2 class="text-3xl md:text-4xl font-bold mb-6">Join the Diamond Revolution</h2>
-    <p class="text-gray-300 mb-8">Be part of the next generation of play-to-earn mining on Solana.</p>
-    <a href="dashboard.html" class="bg-blue-500 hover:bg-blue-600 px-8 py-4 text-lg font-semibold rounded-xl transition-all">Get Started</a>
-  </section>
-
-  <footer class="text-center py-6 text-gray-500 text-sm border-t border-gray-800 relative z-10">
+  <footer class="text-center py-6 text-xs text-slate-500 mt-10">
     © 2025 DiamondMiner — All Rights Reserved.
   </footer>
 
-  <!-- Sparkle Animation -->
   <script>
-    const canvas = document.getElementById('sparkles');
-    const ctx = canvas.getContext('2d');
-    let sparkles = [];
-    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-    window.addEventListener('resize', resize);
-    resize();
-    function createSparkle() {
-      return { x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: Math.random() * 2 + 1, speedY: Math.random() * 0.3 + 0.1, opacity: Math.random() * 0.7 + 0.3 };
-    }
-    function drawSparkles() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = 'rgba(59, 130, 246, 0.8)';
-      sparkles.forEach(s => {
-        ctx.globalAlpha = s.opacity;
-        ctx.beginPath();
-        ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.closePath();
-        s.y += s.speedY;
-        if (s.y > canvas.height) { s.y = 0; s.x = Math.random() * canvas.width; }
-      });
-      requestAnimationFrame(drawSparkles);
-    }
-    for (let i = 0; i < 120; i++) sparkles.push(createSparkle());
-    drawSparkles();
-  </script>
+    // ---------- DOM elements ----------
+    const miningRateEl = document.getElementById("miningRate");
+    const miningBalanceEl = document.getElementById("miningBalance");
+    const totalDiaEl = document.getElementById("totalDia");
+    const miningStatus = document.getElementById("miningStatus");
+    const startBtn = document.getElementById("startMiningBtn");
+    const disconnectBtn = document.getElementById("disconnectBtn");
+    const connectWalletBtn = document.getElementById("connectWalletBtn");
+    const islandImg = document.getElementById("islandImg");
+    const sparkles = document.querySelectorAll(".sparkle");
 
-  <!-- Wallet Modal Logic -->
-  <script>
-    function openWalletModal() {
-      document.getElementById("walletModal").classList.remove("hidden");
-    }
-    function closeWalletModal() {
-      document.getElementById("walletModal").classList.add("hidden");
+    // ---------- Mining config ----------
+    // Keep your original rate meaning: 0.05 = $DIA per minute
+    const ratePerMinute = 0.05;
+    const ratePerSecond = ratePerMinute / 60;
+
+    // ---------- State (per wallet) ----------
+    let wallet = null;
+    let balance = 0;      // unclaimed mining balance
+    let totalDia = 0;     // total claimed (persisted in wallet_data as totalDia)
+    let miningActive = false;
+    let lastMineTime = null;   // timestamp (ms) of last accrual
+    let miningInterval = null;
+
+    // ---------- Helpers ----------
+    function updateUI() {
+      miningBalanceEl.innerText = balance.toFixed(4) + " $DIA";
+      totalDiaEl.innerText = totalDia.toFixed(4) + " $DIA";
+      miningRateEl.innerText = ratePerMinute.toFixed(2) + " $DIA / min";
     }
 
+    function saveWalletData() {
+      if (!wallet) return;
+      const data = {
+        balance,
+        totalDia,
+        miningActive,
+        lastMineTime
+      };
+      localStorage.setItem(wallet + "_data", JSON.stringify(data));
+    }
+
+    function loadWalletData(addr) {
+      const raw = localStorage.getItem(addr + "_data");
+      if (!raw) return null;
+      try { return JSON.parse(raw); } catch (e) { return null; }
+    }
+
+    function toggleSparkles(active) {
+      sparkles.forEach(s => s.style.display = active ? "block" : "none");
+      islandImg.classList.toggle("island-glow", active);
+    }
+
+    // ---------- Mining tick (single precise increment using elapsed time) ----------
+    function miningTick() {
+      if (!miningActive || !lastMineTime) return;
+      const now = Date.now();
+      const elapsedSeconds = (now - lastMineTime) / 1000;
+      if (elapsedSeconds <= 0) return;
+      // accrue exactly elapsedSeconds * ratePerSecond
+      balance += elapsedSeconds * ratePerSecond;
+      lastMineTime = now;
+      updateUI();
+      saveWalletData();
+    }
+
+    // ---------- Start mining ----------
+    function startMining(resume = false) {
+      if (!wallet) return openWalletModal();
+      if (miningActive) return; // already mining
+
+      miningActive = true;
+      lastMineTime = Date.now();
+      miningStatus.classList.remove("hidden");
+      startBtn.innerText = "Stop Mining";
+      toggleSparkles(true);
+
+      // persist that mining is active
+      saveWalletData();
+
+      // clear any previous interval, then start a 1s tick loop
+      clearInterval(miningInterval);
+      miningInterval = setInterval(miningTick, 1000);
+    }
+
+    // ---------- Stop mining ----------
+    function stopMining() {
+      if (!miningActive) return;
+      // do a final tick to ensure no lost seconds
+      miningTick();
+
+      miningActive = false;
+      clearInterval(miningInterval);
+      startBtn.innerText = "Start Mining";
+      miningStatus.classList.add("hidden");
+      toggleSparkles(false);
+
+      // save state
+      saveWalletData();
+    }
+
+    // ---------- Claim ----------
+    document.getElementById("claimBtn").addEventListener("click", () => {
+      if (balance > 0) {
+        // add unclaimed balance to total, then zero out balance
+        totalDia += balance;
+        balance = 0;
+        updateUI();
+        saveWalletData();
+        alert("💎 Claimed! Total now: " + totalDia.toFixed(4) + " $DIA");
+      } else {
+        alert("⚠️ No rewards to claim yet!");
+      }
+    });
+
+    // ---------- Wallet modal helpers ----------
+    function openWalletModal() { document.getElementById("walletModal").classList.remove("hidden"); }
+    function closeWalletModal() { document.getElementById("walletModal").classList.add("hidden"); }
+
+    // ---------- Connect wallet ----------
     async function connectWallet() {
       if (window.solana && window.solana.isPhantom) {
         try {
-          const response = await window.solana.connect();
-          const walletAddress = response.publicKey.toString();
-          localStorage.setItem("walletAddress", walletAddress);
+          const resp = await window.solana.connect();
+          wallet = resp.publicKey.toString();
+          localStorage.setItem("walletAddress", wallet);
           closeWalletModal();
-          document.body.classList.add("fade-out");
-          setTimeout(() => window.location.href = "dashboard.html", 800);
+
+          // load wallet data and possibly resume
+          const saved = loadWalletData(wallet) || {};
+          balance = parseFloat(saved.balance || 0);
+          totalDia = parseFloat(saved.totalDia || 0);
+          const wasMining = !!saved.miningActive;
+          const savedLast = saved.lastMineTime || null;
+
+          if (wasMining && savedLast) {
+            // award offline earnings exactly as if mining continued
+            const now = Date.now();
+            const elapsedSeconds = (now - savedLast) / 1000;
+            if (elapsedSeconds > 0) {
+              balance += elapsedSeconds * ratePerSecond;
+            }
+            lastMineTime = now;
+            miningActive = true;
+            // start loop
+            startMining(true);
+          } else {
+            miningActive = false;
+            lastMineTime = null;
+            updateUI();
+            saveWalletData();
+          }
+
         } catch (err) {
           console.error("Wallet connection cancelled:", err);
         }
@@ -187,25 +303,96 @@
         alert("⚠️ Phantom wallet not found. Please install it from https://phantom.app/");
       }
     }
+    connectWalletBtn.addEventListener("click", connectWallet);
 
-    document.getElementById("connectWalletBtn").addEventListener("click", connectWallet);
+    // ---------- Disconnect ----------
+    disconnectBtn.addEventListener("click", () => {
+      // stop mining but keep wallet data stored under wallet + "_data"
+      stopMining();
 
-    const startBtn = document.getElementById("startMiningBtn");
-    const savedWallet = localStorage.getItem("walletAddress");
+      // remove active wallet only, keep its data saved
+      localStorage.removeItem("walletAddress");
+      wallet = null;
 
-    function updateButton() {
-      if (savedWallet) {
-        startBtn.textContent = "Go to Dashboard";
-        startBtn.classList.remove("bg-blue-500");
-        startBtn.classList.add("bg-green-500", "hover:bg-green-600");
-        startBtn.onclick = () => {
-          document.body.classList.add("fade-out");
-          setTimeout(() => window.location.href = "dashboard.html", 800);
-        };
+      // fade-out to home (same UX as before)
+      document.body.classList.add("fade-out");
+      setTimeout(() => (window.location.href = "index.html"), 600);
+    });
+
+    // ---------- Start button behavior ----------
+    startBtn.addEventListener("click", () => {
+      if (!wallet) {
+        // if there's no wallet currently in memory, try to read stored walletAddress
+        const savedWallet = localStorage.getItem("walletAddress");
+        if (!savedWallet) return openWalletModal();
+        // else use saved wallet and load its data
+        wallet = savedWallet;
+        const saved = loadWalletData(wallet) || {};
+        balance = parseFloat(saved.balance || 0);
+        totalDia = parseFloat(saved.totalDia || 0);
+        const wasMining = !!saved.miningActive;
+        const savedLast = saved.lastMineTime || null;
+
+        if (wasMining && savedLast) {
+          const now = Date.now();
+          const elapsedSeconds = (now - savedLast) / 1000;
+          if (elapsedSeconds > 0) balance += elapsedSeconds * ratePerSecond;
+          lastMineTime = now;
+          miningActive = true;
+          startMining(true);
+          return;
+        } else {
+          updateUI();
+          startMining();
+          return;
+        }
       }
-    }
-    updateButton();
-  </script>
 
+      // Toggle mining if wallet exists
+      if (miningActive) stopMining();
+      else startMining();
+    });
+
+    // ---------- Load on page startup ----------
+    document.addEventListener("DOMContentLoaded", () => {
+      // Check wallet presence
+      const savedWallet = localStorage.getItem("walletAddress");
+      if (!savedWallet) {
+        // keep previous behavior: redirect to home if no wallet
+        document.body.classList.add("fade-out");
+        setTimeout(() => (window.location.href = "index.html"), 600);
+        return;
+      }
+
+      // set wallet and load its data
+      wallet = savedWallet;
+      const saved = loadWalletData(wallet) || {};
+      balance = parseFloat(saved.balance || 0);
+      totalDia = parseFloat(saved.totalDia || 0);
+      const wasMining = !!saved.miningActive;
+      const savedLast = saved.lastMineTime || null;
+
+      if (wasMining && savedLast) {
+        // offline accrual: compute elapsed seconds since lastMineTime and add exact amount
+        const now = Date.now();
+        const elapsedSeconds = (now - savedLast) / 1000;
+        if (elapsedSeconds > 0) {
+          balance += elapsedSeconds * ratePerSecond;
+        }
+        lastMineTime = now;
+        miningActive = true;
+        // update UI and start tick loop
+        updateUI();
+        startMining(true);
+      } else {
+        miningActive = false;
+        lastMineTime = null;
+        updateUI();
+      }
+    });
+
+    // Expose stopMining for other handlers if needed
+    window.stopMining = stopMining;
+  </script>
 </body>
 </html>
