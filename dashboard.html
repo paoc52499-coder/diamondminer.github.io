@@ -120,6 +120,35 @@
         class="mt-8 w-full py-3 bg-gradient-to-r from-green-400 to-emerald-500 text-black font-bold rounded-lg shadow-md hover:scale-105 transition-transform duration-300">
         Claim Rewards
       </button>
+
+      <!-- SWAP: inserted here, keeps the look consistent -->
+      <div id="swapSection" class="mt-6 border-t border-white/10 pt-6">
+        <h3 class="text-sm text-gray-300 mb-2">Swap $DIA → $SOL (24h cooldown)</h3>
+
+        <div class="flex items-center gap-3 mb-3">
+          <div class="flex-1">
+            <p class="text-xs text-gray-400">Available to swap (claimed $DIA)</p>
+            <p id="swapAvailable" class="font-bold text-cyan-300">0.0000 $DIA</p>
+          </div>
+          <div class="w-44 text-right">
+            <p class="text-xs text-gray-400">Rate</p>
+            <p class="font-bold text-cyan-300">1 $DIA = <span id="diaToSolRateDisplay">0.0025</span> $SOL</p>
+          </div>
+        </div>
+
+        <div class="mb-3 text-sm text-gray-400" id="swapCooldown">Next swap available: now</div>
+
+        <div class="flex gap-3">
+          <button id="swapBtn"
+            class="flex-1 py-3 bg-gradient-to-r from-purple-500 to-indigo-500 text-black font-bold rounded-lg shadow-md hover:scale-105 transition-transform duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Swap to SOL
+          </button>
+        </div>
+
+        <p id="solBalanceDisplay" class="mt-4 text-sm text-gray-300">SOL Balance: 0.0000 $SOL</p>
+      </div>
+      <!-- end swap -->
     </div>
   </main>
 
@@ -154,24 +183,44 @@
     const islandImg = document.getElementById("islandImg");
     const sparkles = document.querySelectorAll(".sparkle");
 
+    // swap DOM
+    const swapBtn = document.getElementById("swapBtn");
+    const swapAvailableEl = document.getElementById("swapAvailable");
+    const swapCooldownEl = document.getElementById("swapCooldown");
+    const solBalanceDisplay = document.getElementById("solBalanceDisplay");
+    const diaToSolRateDisplay = document.getElementById("diaToSolRateDisplay");
+
     // ---------- Mining config ----------
     // Keep your original rate meaning: 0.05 = $DIA per minute
     const ratePerMinute = 0.05;
     const ratePerSecond = ratePerMinute / 60;
 
+    // ---------- Swap config ----------
+    const DIA_TO_SOL_RATE = 0.0025; // changeable fixed rate
+    const SWAP_COOLDOWN_MS = 24 * 60 * 60 * 1000; // 24 hours in ms
+    diaToSolRateDisplay.innerText = DIA_TO_SOL_RATE.toString();
+
     // ---------- State (per wallet) ----------
     let wallet = null;
     let balance = 0;      // unclaimed mining balance
-    let totalDia = 0;     // total claimed (persisted in wallet_data as totalDia)
+    let totalDia = 0;     // total claimed (persisted)
+    let solBalance = 0;   // simulated SOL balance (persisted)
     let miningActive = false;
     let lastMineTime = null;   // timestamp (ms) of last accrual
     let miningInterval = null;
+    let nextSwapTime = null;   // timestamp (ms) when next swap allowed
 
     // ---------- Helpers ----------
     function updateUI() {
       miningBalanceEl.innerText = balance.toFixed(4) + " $DIA";
       totalDiaEl.innerText = totalDia.toFixed(4) + " $DIA";
       miningRateEl.innerText = ratePerMinute.toFixed(2) + " $DIA / min";
+
+      // swap UI: allowed amount is the claimed totalDia (convention)
+      swapAvailableEl.innerText = totalDia.toFixed(4) + " $DIA";
+      solBalanceDisplay.innerText = "SOL Balance: " + solBalance.toFixed(4) + " $SOL";
+
+      updateSwapCooldownUI();
     }
 
     function saveWalletData() {
@@ -179,8 +228,10 @@
       const data = {
         balance,
         totalDia,
+        solBalance,
         miningActive,
-        lastMineTime
+        lastMineTime,
+        nextSwapTime
       };
       localStorage.setItem(wallet + "_data", JSON.stringify(data));
     }
@@ -258,6 +309,57 @@
       }
     });
 
+    // ---------- Swap helpers ----------
+    function updateSwapCooldownUI() {
+      if (!nextSwapTime) {
+        swapCooldownEl.innerText = "Next swap available: now";
+        swapBtn.disabled = (totalDia <= 0); // if no DIA claimed, disable
+        return;
+      }
+      const now = Date.now();
+      const remaining = nextSwapTime - now;
+      if (remaining <= 0) {
+        swapCooldownEl.innerText = "Next swap available: now";
+        swapBtn.disabled = (totalDia <= 0);
+        nextSwapTime = null;
+        saveWalletData();
+      } else {
+        const hrs = Math.floor(remaining / 3600000);
+        const mins = Math.floor((remaining % 3600000) / 60000);
+        const secs = Math.floor((remaining % 60000) / 1000);
+        swapCooldownEl.innerText = `Next swap available in ${hrs}h ${mins}m ${secs}s`;
+        swapBtn.disabled = true;
+      }
+    }
+
+    // swap execution: converts totalDia (claimed) to SOL using DIA_TO_SOL_RATE
+    function doSwap() {
+      if (totalDia <= 0) {
+        alert("⚠️ No claimed $DIA available to swap. Claim rewards first.");
+        return;
+      }
+      // compute converted SOL
+      const solGain = totalDia * DIA_TO_SOL_RATE;
+      solBalance += solGain;
+      // zero claimed DIA after swap
+      totalDia = 0;
+      // set cooldown
+      nextSwapTime = Date.now() + SWAP_COOLDOWN_MS;
+      updateUI();
+      saveWalletData();
+      alert(`🔄 Swap complete — received ${solGain.toFixed(4)} $SOL. Next swap available in 24 hours.`);
+    }
+
+    // attach swap handler
+    swapBtn.addEventListener("click", () => {
+      // if button disabled, ignore (UI prevents click but double-check)
+      if (swapBtn.disabled) return;
+      // confirm
+      const confirmSwap = confirm(`Swap all claimed $DIA (${totalDia.toFixed(4)} $DIA) to SOL at rate ${DIA_TO_SOL_RATE} SOL/DIA?`);
+      if (!confirmSwap) return;
+      doSwap();
+    });
+
     // ---------- Wallet modal helpers ----------
     function openWalletModal() { document.getElementById("walletModal").classList.remove("hidden"); }
     function closeWalletModal() { document.getElementById("walletModal").classList.add("hidden"); }
@@ -275,6 +377,8 @@
           const saved = loadWalletData(wallet) || {};
           balance = parseFloat(saved.balance || 0);
           totalDia = parseFloat(saved.totalDia || 0);
+          solBalance = parseFloat(saved.solBalance || 0);
+          nextSwapTime = saved.nextSwapTime || null;
           const wasMining = !!saved.miningActive;
           const savedLast = saved.lastMineTime || null;
 
@@ -330,6 +434,8 @@
         const saved = loadWalletData(wallet) || {};
         balance = parseFloat(saved.balance || 0);
         totalDia = parseFloat(saved.totalDia || 0);
+        solBalance = parseFloat(saved.solBalance || 0);
+        nextSwapTime = saved.nextSwapTime || null;
         const wasMining = !!saved.miningActive;
         const savedLast = saved.lastMineTime || null;
 
@@ -369,6 +475,8 @@
       const saved = loadWalletData(wallet) || {};
       balance = parseFloat(saved.balance || 0);
       totalDia = parseFloat(saved.totalDia || 0);
+      solBalance = parseFloat(saved.solBalance || 0);
+      nextSwapTime = saved.nextSwapTime || null;
       const wasMining = !!saved.miningActive;
       const savedLast = saved.lastMineTime || null;
 
@@ -389,6 +497,9 @@
         lastMineTime = null;
         updateUI();
       }
+
+      // update swap cooldown UI every second
+      setInterval(updateSwapCooldownUI, 1000);
     });
 
     // Expose stopMining for other handlers if needed
