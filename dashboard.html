@@ -313,14 +313,14 @@
     function updateSwapCooldownUI() {
       if (!nextSwapTime) {
         swapCooldownEl.innerText = "Next swap available: now";
-        swapBtn.disabled = (totalDia <= 0); // if no DIA claimed, disable
+        if (swapBtn) swapBtn.disabled = (totalDia <= 0); // if no DIA claimed, disable
         return;
       }
       const now = Date.now();
       const remaining = nextSwapTime - now;
       if (remaining <= 0) {
         swapCooldownEl.innerText = "Next swap available: now";
-        swapBtn.disabled = (totalDia <= 0);
+        if (swapBtn) swapBtn.disabled = (totalDia <= 0);
         nextSwapTime = null;
         saveWalletData();
       } else {
@@ -328,7 +328,7 @@
         const mins = Math.floor((remaining % 3600000) / 60000);
         const secs = Math.floor((remaining % 60000) / 1000);
         swapCooldownEl.innerText = `Next swap available in ${hrs}h ${mins}m ${secs}s`;
-        swapBtn.disabled = true;
+        if (swapBtn) swapBtn.disabled = true;
       }
     }
 
@@ -350,15 +350,17 @@
       alert(`🔄 Swap complete — received ${solGain.toFixed(4)} $SOL. Next swap available in 24 hours.`);
     }
 
-    // attach swap handler
-    swapBtn.addEventListener("click", () => {
-      // if button disabled, ignore (UI prevents click but double-check)
-      if (swapBtn.disabled) return;
-      // confirm
-      const confirmSwap = confirm(`Swap all claimed $DIA (${totalDia.toFixed(4)} $DIA) to SOL at rate ${DIA_TO_SOL_RATE} SOL/DIA?`);
-      if (!confirmSwap) return;
-      doSwap();
-    });
+    // attach swap handler (if element exists)
+    if (swapBtn) {
+      swapBtn.addEventListener("click", () => {
+        // if button disabled, ignore (UI prevents click but double-check)
+        if (swapBtn.disabled) return;
+        // confirm
+        const confirmSwap = confirm(`Swap all claimed $DIA (${totalDia.toFixed(4)} $DIA) to SOL at rate ${DIA_TO_SOL_RATE} SOL/DIA?`);
+        if (!confirmSwap) return;
+        doSwap();
+      });
+    }
 
     // ---------- Wallet modal helpers ----------
     function openWalletModal() { document.getElementById("walletModal").classList.remove("hidden"); }
@@ -500,6 +502,50 @@
 
       // update swap cooldown UI every second
       setInterval(updateSwapCooldownUI, 1000);
+    });
+
+    // ---------- Page Visibility & Unload Persistence ----------
+    // Save a final tick + timestamp when the page is being unloaded/closed
+    window.addEventListener("beforeunload", () => {
+      if (miningActive) {
+        // run final accrual (ensures lastMineTime is up-to-date)
+        miningTick();
+        saveWalletData();
+      } else {
+        // still save state
+        saveWalletData();
+      }
+    });
+
+    // When the page is hidden (user switches tab or minimizes), store the timestamp so offline accrual works.
+    document.addEventListener("visibilitychange", () => {
+      if (!wallet) return;
+      if (document.visibilityState === "hidden") {
+        if (miningActive) {
+          // apply final tick and persist lastMineTime (this marks the time the user left)
+          miningTick();
+          saveWalletData();
+        } else {
+          // just persist current state
+          saveWalletData();
+        }
+      } else if (document.visibilityState === "visible") {
+        // When visible again, compute offline accrual between saved lastMineTime and now if miningActive
+        const saved = loadWalletData(wallet);
+        if (saved && saved.miningActive && saved.lastMineTime) {
+          const now = Date.now();
+          const elapsedSeconds = (now - saved.lastMineTime) / 1000;
+          if (elapsedSeconds > 0) {
+            balance += elapsedSeconds * ratePerSecond;
+          }
+          lastMineTime = now;
+          miningActive = true;
+          updateUI();
+          // restart the tick loop if not already running
+          clearInterval(miningInterval);
+          miningInterval = setInterval(miningTick, 1000);
+        }
+      }
     });
 
     // Expose stopMining for other handlers if needed
