@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Diamond Miner Marketplace</title>
 
-  <!-- TAILWIND (same as other pages) -->
+  <!-- TAILWIND -->
   <script src="https://cdn.tailwindcss.com"></script>
 
   <style>
@@ -13,13 +13,11 @@
       background: #0b0f17;
       color: #fff;
       font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
     }
 
     h1 {
       text-align: center;
-      margin-top: 120px; /* pushes content below navbar */
+      margin-top: 120px;
       font-size: 32px;
       color: #4ae3ff;
     }
@@ -37,32 +35,44 @@
       background: #121827;
       border: 2px solid #1d2436;
       border-radius: 14px;
-      padding: 20px;
+      padding: 25px 20px;
       text-align: center;
       box-shadow: 0 0 10px rgba(0, 255, 255, 0.15);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
-    .item-card img {
-      width: 180px;
+    .item-img-wrapper {
+      width: 100%;
       height: 180px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .item-img-wrapper img {
+      max-width: 160px;
+      max-height: 160px;
       object-fit: contain;
-      margin-bottom: 15px;
     }
 
     .item-title {
       font-size: 20px;
       font-weight: bold;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
       color: #6be8ff;
     }
 
     .item-info {
       font-size: 16px;
       margin-bottom: 15px;
+      line-height: 1.4;
     }
 
     .locked {
-      opacity: 0.3;
+      opacity: 0.35;
       filter: grayscale(100%);
     }
 
@@ -116,25 +126,40 @@
 
     <!-- DMiner base NFT -->
     <div class="item-card" id="item-dminer">
-      <img src="images/dminer.png" />
+      <div class="item-img-wrapper">
+        <img src="images/dminer.png" />
+      </div>
       <div class="item-title">DMiner</div>
-      <div class="item-info">Mining Rate: +0.02 / min<br>Price: 50 $DIA</div>
+      <div class="item-info">
+        Mining Rate: +0.02 / min<br>
+        Price: 50 $DIA
+      </div>
       <button class="buy-btn" onclick="buyItem('dminer')">BUY</button>
     </div>
 
     <!-- Drill 1 -->
     <div class="item-card locked" id="item-drill1">
-      <img src="images/drill1.png" />
+      <div class="item-img-wrapper">
+        <img src="images/drill1.png" />
+      </div>
       <div class="item-title">Drill 1</div>
-      <div class="item-info">Mining Rate: +0.03 / min<br>Price: 75 $DIA</div>
+      <div class="item-info">
+        Mining Rate: +0.03 / min<br>
+        Price: 75 $DIA
+      </div>
       <button class="buy-btn" id="btn-drill1" onclick="buyItem('drill1')" disabled>BUY</button>
     </div>
 
     <!-- Drill 2 -->
     <div class="item-card locked" id="item-drill2">
-      <img src="images/drill2.png" />
+      <div class="item-img-wrapper">
+        <img src="images/drill2.png" />
+      </div>
       <div class="item-title">Drill 2</div>
-      <div class="item-info">Mining Rate: +0.05 / min (Stackable)<br>Price: 110 $DIA</div>
+      <div class="item-info">
+        Mining Rate: +0.05 / min (Stackable)<br>
+        Price: 110 $DIA
+      </div>
       <button class="buy-btn" id="btn-drill2" onclick="buyItem('drill2')" disabled>BUY</button>
     </div>
 
