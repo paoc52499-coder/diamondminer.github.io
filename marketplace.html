@@ -1,261 +1,472 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Diamond Miner Marketplace</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DiamondMiner — Marketplace</title>
+
+  <!-- Tailwind (keeps your theme consistent) -->
+  <script src="https://cdn.tailwindcss.com"></script>
 
   <style>
-    body {
-      background: #0b0f17;
-      color: #fff;
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
+    :root{
+      --bg:#0b0f17;
+      --card:#121827;
+      --muted:#6b7280;
+      --accent:#4ae3ff;
+      --panel-border: rgba(255,255,255,0.05);
     }
-
-    h1 {
-      text-align: center;
-      margin-top: 100px;
-      font-size: 32px;
-      color: #4ae3ff;
+    body{
+      background: radial-gradient(circle at top, #060812 0%, var(--bg) 100%);
+      color: #fff;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      margin:0;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
     }
 
     /* NAVBAR */
-    header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      background: #05060d90;
-      backdrop-filter: blur(6px);
-      z-index: 50;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-      padding: 15px 0;
-    }
+    header { background: #05060d90; backdrop-filter: blur(6px); border-bottom:1px solid var(--panel-border); }
+    .nav-inner { max-width:1120px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; padding:14px 20px; }
+    .nav-links a { color:#cbd5e1; margin-left:18px; text-decoration:none; font-weight:500; }
+    .nav-links a.active, .nav-links a:hover{ color: var(--accent); }
 
-    nav a {
-      margin-right: 20px;
-      color: #bbb;
-      text-decoration: none;
-      font-size: 14px;
-      transition: 0.2s;
-    }
+    /* Page heading */
+    .page-hero { max-width:1120px; margin:92px auto 18px; padding: 0 20px; text-align:center; }
+    .page-hero h1 { font-weight:800; font-size:30px; color:var(--accent); letter-spacing:-0.02em; }
 
-    nav a:hover {
-      color: #4ae3ff;
-    }
-
-    .marketplace-container {
-      width: 90%;
-      max-width: 1100px;
-      margin: 40px auto;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 25px;
-    }
+    /* Marketplace grid */
+    .marketplace-container { max-width:1120px; margin:18px auto 40px; padding:0 20px; display:grid; gap:22px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
 
     .item-card {
-      background: #121827;
-      border: 2px solid #1d2436;
-      border-radius: 14px;
-      padding: 20px;
-      text-align: center;
-      box-shadow: 0 0 10px rgba(0, 255, 255, 0.15);
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.012));
+      border: 1px solid rgba(255,255,255,0.03);
+      border-radius:14px;
+      padding:22px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      text-align:center;
+      transition: transform .16s ease, box-shadow .16s ease;
+      box-shadow: 0 6px 24px rgba(2,6,23,0.6);
+      min-height: 360px;
     }
+    .item-card:hover{ transform: translateY(-6px); box-shadow: 0 18px 40px rgba(2,6,23,0.75); }
 
-    .item-card img {
-      width: 180px;
-      height: 180px;
-      object-fit: contain;
-      margin: 0 auto 15px auto;
-      display: block;
-    }
+    .item-img-wrapper { width:100%; height:180px; display:flex; align-items:center; justify-content:center; margin-bottom:12px; }
+    .item-img-wrapper img { max-width:170px; max-height:170px; object-fit:contain; display:block; }
 
-    .item-title {
-      font-size: 20px;
-      font-weight: bold;
-      margin-bottom: 10px;
-      color: #6be8ff;
-    }
+    .item-title { color:var(--accent); font-weight:700; font-size:20px; margin-bottom:8px; }
+    .item-info { color:#cbd5e1; margin-bottom:10px; line-height:1.5; }
 
-    .item-info {
-      font-size: 16px;
-      margin-bottom: 15px;
-    }
-
-    .locked {
-      opacity: 0.3;
-      filter: grayscale(100%);
-    }
+    .locked { opacity:.34; filter: grayscale(90%); pointer-events:none; transform:none; }
+    .price { font-weight:700; color:#9fffae; margin-top:4px; }
 
     .buy-btn {
-      background: #2cd4ff;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 8px;
-      font-size: 16px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: 0.2s;
+      margin-top:auto;
+      width:160px;
+      padding:10px 14px;
+      border-radius:10px;
+      border:0;
+      cursor:pointer;
+      font-weight:700;
+      color:#07121a;
+      background: linear-gradient(90deg,#2cd4ff,#4aa6ff);
+      box-shadow: 0 6px 18px rgba(46,191,255,0.12);
     }
+    .buy-btn[disabled] { opacity:.5; cursor:not-allowed; background:#4b5563; color:#ddd; box-shadow:none; }
 
-    .buy-btn:disabled {
-      background: #555;
-      cursor: not-allowed;
+    /* Balance box under header */
+    .balance-bar { max-width:1120px; margin:8px auto; padding:12px 20px; display:flex; align-items:center; justify-content:center; gap:16px; color:#cfefff; font-weight:600; }
+    .balance-pill { background: rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.02); padding:8px 12px; border-radius:999px; }
+
+    /* Coming features: one row centered */
+    .coming-wrap { max-width:1120px; margin:40px auto 30px; padding:0 20px; display:flex; justify-content:center; gap:18px; flex-wrap:wrap; }
+    .feature {
+      background: rgba(255,255,255,0.02);
+      border:1px solid rgba(255,255,255,0.03);
+      padding:18px;
+      border-radius:12px;
+      width:280px;
+      text-align:center;
     }
+    .feature h3 { color:var(--accent); margin-bottom:8px; font-weight:700; }
+    .feature p { color:#cbd5e1; font-size:14px; }
 
-    .buy-btn:hover:not(:disabled) {
-      background: #4ae3ff;
-    }
+    footer { margin-top:32px; border-top:1px solid rgba(255,255,255,0.03); padding:22px 0; text-align:center; color:#9ca3af; }
 
-    #balance-box {
-      text-align: center;
-      margin-top: 20px;
-      font-size: 20px;
-      color: #4ae3ff;
+    /* small responsive tweaks */
+    @media (max-width:520px){
+      .item-card { min-height: 340px; padding:18px; }
+      .buy-btn { width:100%; }
+      .feature { width: 100%; max-width: 420px; }
     }
   </style>
 </head>
-
 <body>
 
   <!-- NAVBAR -->
   <header>
-    <div style="max-width: 1100px; margin: auto; display: flex; align-items: center; justify-content: space-between; padding: 0 20px;">
-      <a href="index.html" style="display:flex; align-items:center; gap:10px; text-decoration:none;">
-        <img src="images/diamond-icon.png" style="width:32px; height:32px;" />
-        <span style="color:#4ae3ff; font-size:18px; font-weight:bold;">DiamondMiner</span>
+    <div class="nav-inner">
+      <a href="index.html" class="flex items-center gap-3">
+        <img src="images/diamond-icon.png" class="w-8 h-8" alt="logo" />
+        <span style="color:var(--accent);font-weight:800;">DiamondMiner</span>
       </a>
 
-      <nav>
+      <nav class="nav-links">
         <a href="index.html">Home</a>
         <a href="dashboard.html">Dashboard</a>
-        <a href="marketplace.html">Marketplace</a>
+        <a href="marketplace.html" class="active">Marketplace</a>
         <a href="tokenomics.html">Tokenomics</a>
         <a href="whitepaper.html">Whitepaper</a>
       </nav>
     </div>
   </header>
 
-  <h1>Diamond Miner NFT Marketplace</h1>
+  <!-- PAGE HERO -->
+  <section class="page-hero">
+    <h1>Diamond Miner — Marketplace</h1>
+  </section>
 
-  <!-- PLAYER BALANCE -->
-  <div id="balance-box">Your $DIA: <span id="diaBalance">0</span></div>
+  <!-- BALANCE -->
+  <div class="balance-bar" aria-live="polite">
+    <div class="balance-pill">Connected wallet: <span id="walletAddressDisplay">—</span></div>
+    <div class="balance-pill">Spendable $DIA (claimed): <span id="spendableDia">0.00</span></div>
+    <div class="balance-pill">Unclaimed mining balance: <span id="unclaimedBalance">0.00</span></div>
+  </div>
 
-  <div class="marketplace-container">
+  <!-- MARKETPLACE GRID -->
+  <section class="marketplace-container" id="marketplaceGrid">
 
-    <!-- DMiner base NFT -->
-    <div class="item-card" id="item-dminer">
-      <img src="images/dminer.png" />
+    <!-- DMiner -->
+    <div class="item-card" id="card-dminer">
+      <div class="item-img-wrapper"><img src="images/dminer.png" alt="DMiner" /></div>
       <div class="item-title">DMiner</div>
-      <div class="item-info">Mining Rate: +0.02 / min<br>Price: 50 $DIA</div>
-      <button class="buy-btn" onclick="buyItem('dminer', 50)">BUY</button>
+      <div class="item-info">Mining Rate: <strong>+0.02 $DIA / min</strong><br><span class="price">Price: 50 $DIA</span></div>
+      <button class="buy-btn" id="buy-dminer" onclick="attemptBuy('dminer')">BUY</button>
     </div>
 
     <!-- Drill 1 -->
-    <div class="item-card locked" id="item-drill1">
-      <img src="images/drill1.png" />
+    <div class="item-card locked" id="card-drill1">
+      <div class="item-img-wrapper"><img src="images/drill1.png" alt="Drill 1" /></div>
       <div class="item-title">Drill 1</div>
-      <div class="item-info">Mining Rate: +0.03 / min<br>Price: 75 $DIA</div>
-      <button class="buy-btn" id="btn-drill1" onclick="buyItem('drill1', 75)" disabled>BUY</button>
+      <div class="item-info">Mining Rate: <strong>+0.03 $DIA / min</strong><br><span class="price">Price: 75 $DIA</span></div>
+      <button class="buy-btn" id="buy-drill1" onclick="attemptBuy('drill1')" disabled>BUY</button>
     </div>
 
     <!-- Drill 2 -->
-    <div class="item-card locked" id="item-drill2">
-      <img src="images/drill2.png" />
+    <div class="item-card locked" id="card-drill2">
+      <div class="item-img-wrapper"><img src="images/drill2.png" alt="Drill 2" /></div>
       <div class="item-title">Drill 2</div>
-      <div class="item-info">Mining Rate: +0.05 / min (Stackable)<br>Price: 110 $DIA</div>
-      <button class="buy-btn" id="btn-drill2" onclick="buyItem('drill2', 110)" disabled>BUY</button>
+      <div class="item-info">Mining Rate: <strong>+0.05 $DIA / min</strong> (Stackable)<br><span class="price">Price: 110 $DIA</span></div>
+      <button class="buy-btn" id="buy-drill2" onclick="attemptBuy('drill2')" disabled>BUY</button>
     </div>
 
-  </div>
+  </section>
 
-  <script>
-    /* -------------------------------
-       LOCAL STORAGE BALANCE HANDLING
-    --------------------------------*/
-    if (!localStorage.getItem("diaBalance")) {
-      localStorage.setItem("diaBalance", "250"); // default test balance
-    }
-
-    function getBalance() {
-      return parseFloat(localStorage.getItem("diaBalance"));
-    }
-
-    function updateBalanceDisplay() {
-      document.getElementById("diaBalance").textContent = getBalance();
-    }
-
-    updateBalanceDisplay();
-
-    /* -------------------------------
-       PURCHASE LOGIC
-    --------------------------------*/
-    let owned = {
-      dminer: false,
-      drill1: false,
-      drill2: false
-    };
-
-    function buyItem(item, price) {
-      let balance = getBalance();
-
-      if (balance < price) {
-        alert("❌ Not enough $DIA!");
-        return;
-      }
-
-      // Deduct DIA
-      localStorage.setItem("diaBalance", (balance - price).toString());
-      updateBalanceDisplay();
-
-      owned[item] = true;
-
-      alert("✅ Purchased: " + item);
-      updateLocks();
-    }
-
-    function updateLocks() {
-      if (owned.dminer) {
-        document.getElementById("item-drill1").classList.remove("locked");
-        document.getElementById("btn-drill1").disabled = false;
-      }
-
-      if (owned.drill1) {
-        document.getElementById("item-drill2").classList.remove("locked");
-        document.getElementById("btn-drill2").disabled = false;
-      }
-    }
-  </script>
-
-  <!-- COMING FEATURES SECTION -->
-  <section class="py-20 bg-gradient-to-b from-black via-slate-900 to-gray-950 text-center">
-    <h2 class="text-3xl md:text-4xl font-bold text-cyan-400 mb-6">GET AHEAD WITH BOOSTER</h2>
-
-    <div class="max-w-5xl mx-auto flex justify-center gap-8 px-6">
-
-      <div class="bg-gray-900/60 p-8 rounded-2xl shadow-lg border border-cyan-400/10 hover:scale-105 transition">
-        <h3 class="text-xl font-semibold text-cyan-300 mb-3">💎 Rare Boosters</h3>
-        <p class="text-gray-400 text-sm">Enhance your mining efficiency with limited-edition NFT boosters.</p>
-      </div>
-
-      <div class="bg-gray-900/60 p-8 rounded-2xl shadow-lg border border-cyan-400/10 hover:scale-105 transition">
-        <h3 class="text-xl font-semibold text-cyan-300 mb-3">⚙️ Mining Equipment</h3>
-        <p class="text-gray-400 text-sm">Upgrade your digital rigs and increase your $DIA yield rate.</p>
-      </div>
-
-      <div class="bg-gray-900/60 p-8 rounded-2xl shadow-lg border border-cyan-400/10 hover:scale-105 transition">
-        <h3 class="text-xl font-semibold text-cyan-300 mb-3">🏪 Player Trades</h3>
-        <p class="text-gray-400 text-sm">Buy and sell NFTs with other miners directly in the marketplace.</p>
-      </div>
-
+  <!-- COMING FEATURES (centered in one row) -->
+  <section class="coming-wrap" aria-hidden="true">
+    <div class="feature">
+      <h3>💎 Rare Boosters</h3>
+      <p>Enhance your mining efficiency with limited-edition NFT boosters.</p>
+    </div>
+    <div class="feature">
+      <h3>⚙️ Mining Equipment</h3>
+      <p>Upgrade your digital rigs and increase your $DIA yield rate.</p>
+    </div>
+    <div class="feature">
+      <h3>🏪 Player Trades</h3>
+      <p>Buy and sell NFTs with other miners directly in the marketplace.</p>
     </div>
   </section>
 
-  <footer class="text-center py-6 text-gray-500 text-sm border-t border-gray-800">
+  <footer>
     © 2025 DiamondMiner — All Rights Reserved.
   </footer>
-  
+
+  <script>
+    /*******************************
+      Marketplace logic (Option A)
+      - Uses the same wallet storage keys as your dashboard:
+        - localStorage.walletAddress -> active wallet
+        - localStorage[wallet + "_data"] -> JSON with wallet data (balance, totalDia, miningActive, lastMineTime, extraRate, etc)
+        - localStorage[wallet + "_owned"] -> JSON array of owned items (persisted)
+      - If no wallet connected, fallback to localStorage.diaBalance for quick testing
+    *******************************/
+
+    // Item catalog (rates in $DIA/min and price)
+    const CATALOG = {
+      dminer: { id: 'dminer', title: 'DMiner', rate: 0.02, price: 50 },
+      drill1: { id: 'drill1', title: 'Drill 1', rate: 0.03, price: 75 },
+      drill2: { id: 'drill2', title: 'Drill 2', rate: 0.05, price: 110 } // stackable
+    };
+
+    // Helpers for storage
+    function getActiveWallet() {
+      return localStorage.getItem('walletAddress') || null;
+    }
+
+    function readWalletData(wallet) {
+      if (!wallet) return null;
+      const raw = localStorage.getItem(wallet + '_data');
+      if (!raw) return null;
+      try { return JSON.parse(raw); } catch(e){ return null; }
+    }
+
+    function writeWalletData(wallet, obj) {
+      if (!wallet) return;
+      localStorage.setItem(wallet + '_data', JSON.stringify(obj));
+    }
+
+    function readOwned(wallet) {
+      const raw = localStorage.getItem(wallet + '_owned');
+      if (!raw) return [];
+      try { return JSON.parse(raw); } catch(e){ return []; }
+    }
+
+    function writeOwned(wallet, arr) {
+      if (!wallet) return;
+      localStorage.setItem(wallet + '_owned', JSON.stringify(arr));
+    }
+
+    // Fallback simple balance (dev/testing) if no wallet connected
+    function ensureFallbackBalance() {
+      if (!localStorage.getItem('diaBalance')) {
+        // Give a test starting balance so you can test buy flow locally
+        localStorage.setItem('diaBalance', '200');
+      }
+    }
+
+    // UI elements
+    const walletDisplay = document.getElementById('walletAddressDisplay');
+    const spendableEl = document.getElementById('spendableDia');
+    const unclaimedEl = document.getElementById('unclaimedBalance');
+
+    // Buttons / cards
+    const btns = {
+      dminer: document.getElementById('buy-dminer'),
+      drill1: document.getElementById('buy-drill1'),
+      drill2: document.getElementById('buy-drill2')
+    };
+    const cards = {
+      dminer: document.getElementById('card-dminer'),
+      drill1: document.getElementById('card-drill1'),
+      drill2: document.getElementById('card-drill2')
+    };
+
+    // Initialize UI on load
+    function initMarketplace() {
+      ensureFallbackBalance();
+
+      const wallet = getActiveWallet();
+      if (wallet) {
+        walletDisplay.textContent = wallet.slice(0,6) + '...' + wallet.slice(-4);
+      } else {
+        walletDisplay.textContent = 'Not connected';
+      }
+
+      // load data depending on wallet presence
+      let spendable, unclaimed;
+      if (wallet) {
+        const data = readWalletData(wallet) || {};
+        // We consider spendable = totalDia (claimed), and unclaimed = balance (mining balance not yet claimed)
+        spendable = parseFloat(data.totalDia || 0);
+        unclaimed = parseFloat(data.balance || 0);
+      } else {
+        spendable = parseFloat(localStorage.getItem('diaBalance') || 0);
+        unclaimed = 0;
+      }
+
+      updateSpendableUI(spendable, unclaimed);
+      restoreOwnedUI(wallet);
+      updateButtonsState();
+      // update countdowns etc if needed (not used here)
+    }
+
+    function updateSpendableUI(spendable, unclaimed) {
+      spendableEl.textContent = Number(spendable || 0).toFixed(4);
+      unclaimedEl.textContent = Number(unclaimed || 0).toFixed(4);
+    }
+
+    // Check if user can afford an item
+    function canAfford(itemKey) {
+      const wallet = getActiveWallet();
+      let spendable = 0;
+      if (wallet) {
+        const data = readWalletData(wallet) || {};
+        spendable = parseFloat(data.totalDia || 0);
+      } else {
+        spendable = parseFloat(localStorage.getItem('diaBalance') || 0);
+      }
+      return spendable >= CATALOG[itemKey].price;
+    }
+
+    // Update buttons (enable/disable) and locks based on ownership and prerequisites
+    function updateButtonsState() {
+      const wallet = getActiveWallet();
+      const owned = wallet ? readOwned(wallet) : JSON.parse(localStorage.getItem('owned_fallback') || '[]');
+
+      // DMiner always purchasable (if you have funds)
+      toggleCardState('dminer', owned.includes('dminer') ? 'owned' : (canAfford('dminer') ? 'buyable' : 'locked'));
+
+      // Drill1 requires DMiner
+      if (!owned.includes('dminer')) {
+        toggleCardState('drill1', 'locked');
+      } else {
+        toggleCardState('drill1', owned.includes('drill1') ? 'owned' : (canAfford('drill1') ? 'buyable' : 'locked'));
+      }
+
+      // Drill2 requires Drill1
+      if (!owned.includes('drill1')) {
+        toggleCardState('drill2', 'locked');
+      } else {
+        toggleCardState('drill2', 'buyable-or-owned', owned.includes('drill2') ? 'owned' : (canAfford('drill2') ? 'buyable' : 'locked'));
+        // drill2 is stackable — owning it doesn't "prevent" another buy in UI; we treat "owned" for single-click state,
+        // but we still allow stack purchases (see attemptBuy logic)
+      }
+    }
+
+    // Changes card visual state and button enabling
+    function toggleCardState(key, state) {
+      // state: 'locked' | 'buyable' | 'owned' | 'buyable-or-owned'
+      const card = cards[key];
+      const btn = btns[key];
+      if (!card || !btn) return;
+
+      // Reset
+      card.classList.remove('locked');
+      btn.disabled = false;
+      btn.textContent = 'BUY';
+
+      if (state === 'locked') {
+        card.classList.add('locked');
+        btn.disabled = true;
+      } else if (state === 'buyable') {
+        card.classList.remove('locked');
+        btn.disabled = false;
+      } else if (state === 'owned') {
+        card.classList.remove('locked');
+        btn.disabled = true;
+        btn.textContent = 'OWNED';
+      } else if (state === 'buyable-or-owned') {
+        // for drill2: if owned at least once show "OWNED (stackable)" but still allow additional purchases
+        const wallet = getActiveWallet();
+        const ownedArr = wallet ? readOwned(wallet) : JSON.parse(localStorage.getItem('owned_fallback') || '[]');
+        if (ownedArr.includes('drill2')) {
+          btn.disabled = false; // allow stacking -> enable
+          btn.textContent = 'BUY (stack)';
+          card.classList.remove('locked');
+        } else {
+          btn.disabled = false;
+          btn.textContent = 'BUY';
+          card.classList.remove('locked');
+        }
+      }
+    }
+
+    // Restore owned UI from storage
+    function restoreOwnedUI(wallet) {
+      const owned = wallet ? readOwned(wallet) : JSON.parse(localStorage.getItem('owned_fallback') || '[]');
+      owned.forEach(id => {
+        const card = cards[id];
+        const btn = btns[id];
+        if (card && btn) {
+          // For DMiner and Drill1 mark as owned
+          btn.textContent = (id === 'drill2') ? 'OWNED' : 'OWNED';
+          btn.disabled = (id === 'drill2') ? false : true; // drill2 remains buyable for stacking, but mark as owned visually
+        }
+      });
+    }
+
+    // Attempt to buy an item (called by button)
+    function attemptBuy(itemKey) {
+      const wallet = getActiveWallet();
+      let spendable = 0;
+      let walletData = null;
+
+      if (wallet) {
+        walletData = readWalletData(wallet) || {};
+        spendable = parseFloat(walletData.totalDia || 0);
+      } else {
+        spendable = parseFloat(localStorage.getItem('diaBalance') || 0);
+      }
+
+      const price = CATALOG[itemKey].price;
+      if (spendable < price) {
+        alert('⚠️ Not enough $DIA to buy ' + CATALOG[itemKey].title);
+        return;
+      }
+
+      // Confirm purchase
+      const ok = confirm(`Buy ${CATALOG[itemKey].title} for ${price} $DIA?`);
+      if (!ok) return;
+
+      // Deduct funds from the appropriate storage
+      if (wallet) {
+        walletData.totalDia = Number((parseFloat(walletData.totalDia || 0) - price).toFixed(8));
+        // If buy uses unclaimed balance instead, adjust here (we follow your request: deduct from total claimed $DIA)
+        // Update extraRate so dashboard can pick it up
+        walletData.extraRate = Number((parseFloat(walletData.extraRate || 0) + CATALOG[itemKey].rate).toFixed(8));
+        writeWalletData(wallet, walletData);
+      } else {
+        // fallback
+        const newBal = Number((parseFloat(localStorage.getItem('diaBalance') || 0) - price).toFixed(8));
+        localStorage.setItem('diaBalance', String(newBal));
+        // also maintain fallback owned list
+        let fallbackOwned = JSON.parse(localStorage.getItem('owned_fallback') || '[]');
+        fallbackOwned.push(itemKey);
+        localStorage.setItem('owned_fallback', JSON.stringify(fallbackOwned));
+      }
+
+      // persist ownership
+      if (wallet) {
+        const ownedArr = readOwned(wallet);
+        // drill2 is stackable — we will allow multiple buys so store counts by pushing
+        ownedArr.push(itemKey);
+        writeOwned(wallet, ownedArr);
+      }
+
+      // update UI immediately
+      refreshAfterPurchase();
+      alert('✅ Purchased ' + CATALOG[itemKey].title + '. Price deducted.');
+    }
+
+    // Refresh UI and button states after purchase
+    function refreshAfterPurchase() {
+      const wallet = getActiveWallet();
+      let spendableVal = 0;
+      let unclaimedVal = 0;
+
+      if (wallet) {
+        const data = readWalletData(wallet) || {};
+        spendableVal = parseFloat(data.totalDia || 0);
+        unclaimedVal = parseFloat(data.balance || 0);
+      } else {
+        spendableVal = parseFloat(localStorage.getItem('diaBalance') || 0);
+        unclaimedVal = 0;
+      }
+
+      updateSpendableUI(spendableVal, unclaimedVal);
+      updateButtonsState();
+      restoreOwnedUI(wallet);
+    }
+
+    // Init on page load
+    window.addEventListener('DOMContentLoaded', () => {
+      initMarketplace();
+
+      // Keep UI in sync if some other tab updates localStorage (optional)
+      window.addEventListener('storage', (e) => {
+        // when wallet_data or owned keys change we refresh
+        if (!getActiveWallet()) return;
+        const wallet = getActiveWallet();
+        if (e.key && (e.key.startsWith(wallet + '_') || e.key === 'diaBalance' || e.key === 'walletAddress')) {
+          // small debounce
+          setTimeout(() => { refreshAfterPurchase(); }, 100);
+        }
+      });
+    });
+
+  </script>
 </body>
 </html>
