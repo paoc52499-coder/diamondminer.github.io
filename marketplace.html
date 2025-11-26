@@ -3,90 +3,144 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DiamondMiner – Marketplace</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Diamond Miner Marketplace</title>
   <style>
     body {
-      background: radial-gradient(circle at top, #0a0a0f 0%, #000 100%);
-      color: white;
-      font-family: 'Inter', sans-serif;
-      overflow-x: hidden;
+      background: #0b0f17;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
     }
 
-    @keyframes float {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-12px); }
-    }
-    .animate-float {
-      animation: float 5s ease-in-out infinite;
+    h1 {
+      text-align: center;
+      margin-top: 30px;
+      font-size: 32px;
+      color: #4ae3ff;
     }
 
-    /* Glow effect for text */
-    .glow {
-      text-shadow: 0 0 10px rgba(34,211,238,0.7), 0 0 20px rgba(34,211,238,0.4);
+    .marketplace-container {
+      width: 90%;
+      max-width: 1100px;
+      margin: 40px auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 25px;
+    }
+
+    .item-card {
+      background: #121827;
+      border: 2px solid #1d2436;
+      border-radius: 14px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 0 10px rgba(0, 255, 255, 0.15);
+    }
+
+    .item-card img {
+      width: 180px;
+      height: 180px;
+      object-fit: contain;
+      margin-bottom: 15px;
+    }
+
+    .item-title {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #6be8ff;
+    }
+
+    .item-info {
+      font-size: 16px;
+      margin-bottom: 15px;
+    }
+
+    .locked {
+      opacity: 0.3;
+      filter: grayscale(100%);
+    }
+
+    .buy-btn {
+      background: #2cd4ff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.2s;
+    }
+
+    .buy-btn:disabled {
+      background: #555;
+      cursor: not-allowed;
+    }
+
+    .buy-btn:hover:not(:disabled) {
+      background: #4ae3ff;
     }
   </style>
 </head>
+<body>
+  <h1>Diamond Miner NFT Marketplace</h1>
 
-<body class="bg-gradient-to-b from-black via-gray-900 to-slate-900">
-  <!-- NAVBAR -->
-  <header class="fixed top-0 left-0 w-full bg-[#05060d]/90 backdrop-blur-sm z-50 border-b border-white/5">
-    <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
-      <a href="index.html" class="flex items-center gap-3">
-        <img src="images/diamond-icon.png" alt="DiamondMiner" class="w-8 h-8 animate-pulse" />
-        <span class="text-xl font-bold text-cyan-400">DiamondMiner</span>
-      </a>
+  <div class="marketplace-container">
 
-      <nav class="flex gap-8 text-sm font-medium">
-        <a href="index.html" class="text-gray-300 hover:text-cyan-400 transition">Home</a>
-        <a href="dashboard.html" class="text-gray-300 hover:text-cyan-400 transition">Dashboard</a>
-        <a href="marketplace.html" class="text-cyan-400 font-semibold">Marketplace</a>
-        <a href="tokenomics.html" class="text-gray-300 hover:text-cyan-400 transition">Tokenomics</a>
-        <a href="whitepaper.html" class="text-gray-300 hover:text-cyan-400 transition">Whitepaper</a>
-      </nav>
+    <!-- DMiner base NFT -->
+    <div class="item-card" id="item-dminer">
+      <img src="images/dminer.png" />
+      <div class="item-title">DMiner</div>
+      <div class="item-info">Mining Rate: +0.02 / min<br>Price: 50 $DIA</div>
+      <button class="buy-btn" onclick="buyItem('dminer')">BUY</button>
     </div>
-  </header>
 
-  <div class="pt-28"></div>
-
-  <!-- MARKETPLACE HERO SECTION -->
-  <section class="min-h-screen flex flex-col items-center justify-center text-center px-6 relative">
-    <div class="max-w-3xl bg-slate-900/60 backdrop-blur-lg border border-cyan-400/20 rounded-3xl p-10 shadow-2xl animate-float">
-      <h1 class="text-4xl md:text-5xl font-extrabold mb-4 text-cyan-400 glow">
-        🛒 Drilling Soon!
-      </h1>
-      <p class="text-gray-300 text-lg mb-6">
-        Our marketplace is <span class="text-cyan-300 font-semibold">under excavation</span>.<br>
-        Prepare your gear, miners — rare treasures and NFT boosters are on their way!
-      </p>
-      <div class="mt-6">
-        <img src="images/diamond-coin.png" alt="Diamond Coin" class="w-40 mx-auto drop-shadow-[0_0_30px_rgba(34,211,238,0.6)] animate-float" />
-      </div>
+    <!-- Drill 1 - Locked until DMiner bought -->
+    <div class="item-card locked" id="item-drill1">
+      <img src="images/drill1.png" />
+      <div class="item-title">Drill 1</div>
+      <div class="item-info">Mining Rate: +0.03 / min<br>Price: 75 $DIA</div>
+      <button class="buy-btn" id="btn-drill1" onclick="buyItem('drill1')" disabled>BUY</button>
     </div>
-  </section>
 
-  <!-- COMING FEATURES SECTION -->
-  <section class="py-20 bg-gradient-to-b from-black via-slate-900 to-gray-950 text-center">
-    <h2 class="text-3xl md:text-4xl font-bold text-cyan-400 mb-6">Coming to the Marketplace</h2>
-    <div class="max-w-5xl mx-auto grid md:grid-cols-3 gap-8 px-6">
-      <div class="bg-gray-900/60 p-8 rounded-2xl shadow-lg border border-cyan-400/10 hover:scale-105 transition">
-        <h3 class="text-xl font-semibold text-cyan-300 mb-3">💎 Rare Boosters</h3>
-        <p class="text-gray-400 text-sm">Enhance your mining efficiency with limited-edition NFT boosters.</p>
-      </div>
-      <div class="bg-gray-900/60 p-8 rounded-2xl shadow-lg border border-cyan-400/10 hover:scale-105 transition">
-        <h3 class="text-xl font-semibold text-cyan-300 mb-3">⚙️ Mining Equipment</h3>
-        <p class="text-gray-400 text-sm">Upgrade your digital rigs and increase your $DIA yield rate.</p>
-      </div>
-      <div class="bg-gray-900/60 p-8 rounded-2xl shadow-lg border border-cyan-400/10 hover:scale-105 transition">
-        <h3 class="text-xl font-semibold text-cyan-300 mb-3">🏪 Player Trades</h3>
-        <p class="text-gray-400 text-sm">Buy and sell NFTs with other miners directly in the marketplace.</p>
-      </div>
+    <!-- Drill 2 - Locked until Drill 1 bought -->
+    <div class="item-card locked" id="item-drill2">
+      <img src="images/drill2.png" />
+      <div class="item-title">Drill 2</div>
+      <div class="item-info">Mining Rate: +0.05 / min (Stackable)<br>Price: 110 $DIA</div>
+      <button class="buy-btn" id="btn-drill2" onclick="buyItem('drill2')" disabled>BUY</button>
     </div>
-  </section>
 
-  <!-- FOOTER -->
-  <footer class="text-center py-6 text-gray-500 text-sm border-t border-gray-800">
-    © 2025 DiamondMiner — All Rights Reserved.
-  </footer>
+  </div>
+
+  <script>
+    let owned = {
+      dminer: false,
+      drill1: false,
+      drill2: false
+    };
+
+    function buyItem(item) {
+      alert("Purchased: " + item);
+      owned[item] = true;
+      updateLocks();
+    }
+
+    function updateLocks() {
+      // Unlock Drill1
+      if (owned.dminer) {
+        document.getElementById("item-drill1").classList.remove("locked");
+        document.getElementById("btn-drill1").disabled = false;
+      }
+
+      // Unlock Drill2
+      if (owned.drill1) {
+        document.getElementById("item-drill2").classList.remove("locked");
+        document.getElementById("btn-drill2").disabled = false;
+      }
+    }
+  </script>
+
 </body>
 </html>
